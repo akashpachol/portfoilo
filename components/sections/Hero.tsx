@@ -108,7 +108,7 @@ export function Hero() {
                                     [ IMG ]
                                 </div>
                                 <img
-                                    src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop"
+                                    src="/pexels-jakubzerdzicki-34212896.jpg"
                                     alt="Creative Coding"
                                     className="absolute inset-0 w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity duration-500"
                                 />

@@ -7,6 +7,7 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { Preloader } from "@/components/ui/Preloader";
 import { CustomCursor } from "@/components/ui/Cursor";
 import { Grain } from "@/components/ui/Grain";
+import { ParallaxBackground } from "@/components/ui/ParallaxBackground";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -44,6 +45,7 @@ export default function RootLayout({
         <SmoothScroll>
           <Preloader />
           <CustomCursor />
+          <ParallaxBackground />
           <Grain />
           <Navbar />
           <main className="min-h-screen">
