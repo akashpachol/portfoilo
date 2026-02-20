@@ -43,7 +43,7 @@ export function Experience() {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="text-6xl md:text-9xl font-bold font-oswald text-white tracking-tighter max-w-5xl"
+                            className="text-5xl md:text-9xl font-bold font-oswald text-white tracking-tighter max-w-5xl"
                         >
                             Experience
                         </motion.h2>

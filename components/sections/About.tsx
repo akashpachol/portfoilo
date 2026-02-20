@@ -24,7 +24,7 @@ export function About() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8 }}
-                            className="text-6xl md:text-9xl font-bold font-oswald text-white tracking-tighter leading-[0.9] max-w-5xl"
+                            className="text-5xl md:text-9xl font-bold font-oswald text-white tracking-tighter leading-[0.9] max-w-5xl"
                         >
                             DESIGNING THE <br /> FUTURE OF <span className="text-zinc-600">WEB</span>
                         </motion.h2>

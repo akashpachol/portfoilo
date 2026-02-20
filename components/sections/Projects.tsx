@@ -69,15 +69,16 @@ export function Projects() {
         return () => unsubscribe();
     }, [scrollYProgress]);
 
+    // Simplified Projects for Mobile / Sticky for Desktop
     return (
-        <section ref={containerRef} className="relative bg-zinc-950 text-white h-[350vh]">
-            <div className="sticky top-0 h-screen overflow-hidden">
+        <section ref={containerRef} className="relative bg-zinc-950 text-white min-h-screen md:h-[350vh]">
+            <div className="relative md:sticky md:top-0 md:h-screen md:overflow-hidden py-12 md:py-0">
                 <Container className="h-full flex flex-col justify-center">
 
-                    {/* Top Header */}
-                    <div className="absolute top-8 left-0 w-full px-4 md:px-0 flex justify-between items-start z-10">
+                    {/* Top Header - Hidden on Mobile to save space, or smaller */}
+                    <div className="md:absolute top-8 left-0 w-full px-4 md:px-0 flex justify-between items-start z-10 mb-8 md:mb-0">
                         {/* Circular Counter */}
-                        <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full border border-white/20 flex items-center justify-center">
+                        <div className="relative w-16 h-16 md:w-24 md:h-24 rounded-full border border-white/20 flex items-center justify-center">
                             <svg className="absolute w-full h-full -rotate-90" viewBox="0 0 100 100">
                                 <circle
                                     cx="50"
@@ -102,8 +103,8 @@ export function Projects() {
                                 />
                             </svg>
                             <div className="flex flex-col items-center justify-center text-center">
-                                <span className="text-[10px] text-zinc-500 uppercase tracking-widest mb-1">Project</span>
-                                <span className="text-lg font-bold font-mono">
+                                <span className="text-[9px] md:text-[10px] text-zinc-500 uppercase tracking-widest mb-1">Project</span>
+                                <span className="text-sm md:text-lg font-bold font-mono">
                                     {PROJECTS[activeProject].id} <span className="text-zinc-600">|</span> 04
                                 </span>
                             </div>
@@ -119,10 +120,13 @@ export function Projects() {
 
 
                     {/* Main Content Split */}
-                    <div className="flex flex-col md:flex-row h-full items-center">
+                    <div className="flex flex-col md:flex-row h-full items-center gap-8 md:gap-0">
 
                         {/* Left Side: Text Info */}
-                        <div className="w-full md:w-5/12 flex flex-col justify-center gap-6 relative z-20 pt-20 md:pt-0">
+                        <div className="w-full md:w-5/12 flex flex-col justify-center gap-6 relative z-20 pt-0 md:pt-0">
+                            {/* Mobile: Show all projects as a list? Or keep the scroll sync logic?
+                                For now, keeping the scroll sync logic but ensuring it fits on screen.
+                            */}
                             <motion.div
                                 key={activeProject}
                                 initial={{ opacity: 0, y: 20 }}
@@ -130,11 +134,15 @@ export function Projects() {
                                 transition={{ duration: 0.5 }}
                                 className="flex flex-col gap-4"
                             >
-                                <h2 className="text-6xl md:text-8xl font-bold font-oswald tracking-tighter leading-none">
+                                <h2 className="text-5xl md:text-8xl font-bold font-oswald tracking-tighter leading-none">
                                     {PROJECTS[activeProject].title}
                                 </h2>
 
-                                <p className="text-zinc-400 text-base md:text-lg leading-relaxed max-w-md">
+                                <div className="md:hidden flex flex-col mb-2">
+                                    <span className="text-xs font-bold uppercase text-zinc-500">{PROJECTS[activeProject].category}</span>
+                                </div>
+
+                                <p className="text-zinc-400 text-sm md:text-lg leading-relaxed max-w-md">
                                     {PROJECTS[activeProject].description}
                                 </p>
 
@@ -157,11 +165,10 @@ export function Projects() {
                         </div>
 
                         {/* Right Side: Visuals */}
-                        <div className="w-full md:w-7/12 h-[50vh] md:h-[80vh] relative flex items-center justify-center">
+                        <div className="w-full md:w-7/12 h-[40vh] md:h-[80vh] relative flex items-center justify-center">
                             {/* Project Stacked Cards/Images */}
-                            <div className="relative w-full h-full p-4 md:p-8">
+                            <div className="relative w-full h-full p-2 md:p-8">
                                 {PROJECTS.map((project, index) => {
-                                    // Only render current, prev, and next for performance if needed, but for 4 items render all
                                     const isActive = index === activeProject;
                                     return (
                                         <motion.div
@@ -174,19 +181,19 @@ export function Projects() {
                                                 rotate: isActive ? 0 : 5
                                             }}
                                             transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-                                            className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden border border-white/10"
+                                            className="absolute inset-0 w-full h-full rounded-2xl md:rounded-3xl overflow-hidden border border-white/10"
                                             style={{ backgroundColor: project.color, zIndex: isActive ? 10 : 0 }}
                                         >
                                             {/* Mockup / Image Placeholder */}
                                             <div className="w-full h-full relative group">
-                                                <div className="absolute inset-x-8 top-12 bottom-0 bg-zinc-950 rounded-t-xl overflow-hidden shadow-2xl transform translate-y-4 transition-transform duration-700 ease-out group-hover:translate-y-0">
+                                                <div className="absolute inset-x-4 md:inset-x-8 top-8 md:top-12 bottom-0 bg-zinc-950 rounded-t-xl overflow-hidden shadow-2xl transform translate-y-4 transition-transform duration-700 ease-out group-hover:translate-y-0">
                                                     {/* Browser Header Dummy */}
                                                     <div className="h-6 bg-zinc-800 flex items-center px-4 gap-2">
                                                         <div className="w-2 h-2 rounded-full bg-red-500" />
                                                         <div className="w-2 h-2 rounded-full bg-yellow-500" />
                                                         <div className="w-2 h-2 rounded-full bg-green-500" />
                                                     </div>
-                                                    <div className="w-full h-full bg-zinc-900 flex items-center justify-center text-zinc-700 font-oswald text-4xl">
+                                                    <div className="w-full h-full bg-zinc-900 flex items-center justify-center text-zinc-700 font-oswald text-2xl md:text-4xl text-center px-4">
                                                         [ {project.title} Preview ]
                                                     </div>
                                                 </div>

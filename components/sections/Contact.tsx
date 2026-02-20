@@ -14,7 +14,7 @@ export function Contact() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-5xl md:text-8xl font-bold tracking-tighter text-white max-w-4xl"
+                        className="text-4xl md:text-8xl font-bold tracking-tighter text-white max-w-4xl"
                     >
                         Let's build something <span className="text-zinc-600">extraordinary.</span>
                     </motion.h2>
@@ -28,10 +28,10 @@ export function Contact() {
                     >
                         <Link
                             href="mailto:hello@akash.dev"
-                            className="group flex items-center gap-4 text-2xl md:text-4xl font-medium text-white hover:text-indigo-400 transition-colors"
+                            className="group flex items-center gap-2 md:gap-4 text-xl md:text-4xl font-medium text-white hover:text-indigo-400 transition-colors"
                         >
                             <span>hello@akash.dev</span>
-                            <ArrowUpRight className="h-8 w-8 md:h-12 md:w-12 transition-transform group-hover:-translate-y-2 group-hover:translate-x-2" />
+                            <ArrowUpRight className="h-6 w-6 md:h-12 md:w-12 transition-transform group-hover:-translate-y-2 group-hover:translate-x-2" />
                         </Link>
                     </motion.div>
 

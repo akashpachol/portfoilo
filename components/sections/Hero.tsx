@@ -47,16 +47,16 @@ export function Hero() {
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5, duration: 0.8 }}
-                        className="flex flex-col items-center gap-4 mb-20 md:mb-32 scale-90 md:scale-100 origin-center relative z-40"
+                        className="flex flex-col items-center gap-4 mb-16 md:mb-32 scale-90 md:scale-100 origin-center relative z-40"
                     >
-                        <div className="flex items-center gap-8 md:gap-12">
+                        <div className="flex items-center gap-4 md:gap-12">
                             {/* Left Bracket */}
-                            <span className="text-6xl md:text-8xl font-thin text-white font-oswald tracking-tighter transform -translate-y-2">(</span>
+                            <span className="text-4xl md:text-8xl font-thin text-white font-oswald tracking-tighter transform -translate-y-1 md:-translate-y-2">(</span>
 
                             <div className="flex flex-col items-center gap-2">
-                                <span className="text-xs md:text-sm font-bold tracking-[0.3em] text-white uppercase mb-2 font-geist-mono">Hello!</span>
+                                <span className="text-[10px] md:text-sm font-bold tracking-[0.2em] md:tracking-[0.3em] text-white uppercase mb-1 md:mb-2 font-geist-mono">Hello!</span>
                                 <div className="text-center">
-                                    <p className="text-zinc-300 text-sm md:text-base leading-relaxed max-w-[300px] font-light">
+                                    <p className="text-zinc-300 text-xs md:text-base leading-relaxed max-w-[250px] md:max-w-[300px] font-light">
                                         I&apos;m Akash P, a web <br />
                                         developer and engineer. <br />
                                         Welcome to my portfolio!
@@ -65,7 +65,7 @@ export function Hero() {
                             </div>
 
                             {/* Right Bracket */}
-                            <span className="text-6xl md:text-8xl font-thin text-white font-oswald tracking-tighter transform -translate-y-2">)</span>
+                            <span className="text-4xl md:text-8xl font-thin text-white font-oswald tracking-tighter transform -translate-y-1 md:-translate-y-2">)</span>
                         </div>
                     </motion.div>
 
