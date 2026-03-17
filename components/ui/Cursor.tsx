@@ -4,51 +4,58 @@ import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export function CustomCursor() {
-    const [isHovered, setIsHovered] = useState(false);
-    const cursorX = useMotionValue(-100);
-    const cursorY = useMotionValue(-100);
+  const [isHovered, setIsHovered] = useState(false);
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
 
-    const springConfig = { damping: 25, stiffness: 700 };
-    const cursorXSpring = useSpring(cursorX, springConfig);
-    const cursorYSpring = useSpring(cursorY, springConfig);
+  const springConfig = { damping: 25, stiffness: 700 };
+  const cursorXSpring = useSpring(cursorX, springConfig);
+  const cursorYSpring = useSpring(cursorY, springConfig);
 
-    useEffect(() => {
-        const moveCursor = (e: MouseEvent) => {
-            cursorX.set(e.clientX - 16);
-            cursorY.set(e.clientY - 16);
-        };
+  useEffect(() => {
+    const moveCursor = (e: MouseEvent) => {
+      cursorX.set(e.clientX - 16);
+      cursorY.set(e.clientY - 16);
+    };
 
-        const handleMouseOver = (e: MouseEvent) => {
-            const target = e.target as HTMLElement;
-            if (target.tagName.toLowerCase() === "a" || target.tagName.toLowerCase() === "button" || target.closest("a") || target.closest("button")) {
-                setIsHovered(true);
-            } else {
-                setIsHovered(false);
-            }
-        };
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName.toLowerCase() === "a" ||
+        target.tagName.toLowerCase() === "button" ||
+        target.closest("a") ||
+        target.closest("button")
+      ) {
+        setIsHovered(true);
+      } else {
+        setIsHovered(false);
+      }
+    };
 
-        window.addEventListener("mousemove", moveCursor);
-        window.addEventListener("mouseover", handleMouseOver);
+    if (window.matchMedia("(pointer: fine)").matches) {
+      window.addEventListener("mousemove", moveCursor);
+      window.addEventListener("mouseover", handleMouseOver);
+    }
 
-        return () => {
-            window.removeEventListener("mousemove", moveCursor);
-            window.removeEventListener("mouseover", handleMouseOver);
-        };
-    }, [cursorX, cursorY]);
+    return () => {
+      window.removeEventListener("mousemove", moveCursor);
+      window.removeEventListener("mouseover", handleMouseOver);
+    };
+  }, [cursorX, cursorY]);
 
-    return (
-        <motion.div
-            style={{
-                translateX: cursorXSpring,
-                translateY: cursorYSpring,
-            }}
-            animate={{
-                scale: isHovered ? 2.5 : 1,
-                backgroundColor: isHovered ? "white" : "white",
-                mixBlendMode: "difference",
-            }}
-            transition={{ duration: 0.2 }}
-            className="pointer-events-none fixed left-0 top-0 z-[9999] h-8 w-8 rounded-full border border-white/50 bg-transparent backdrop-blur-sm hidden md:block" // Hidden on mobile
-        />
-    );
+  return (
+    <motion.div
+      style={{
+        translateX: cursorXSpring,
+        translateY: cursorYSpring,
+      }}
+      animate={{
+        scale: isHovered ? 2.5 : 1,
+        backgroundColor: isHovered ? "white" : "transparent",
+        mixBlendMode: "difference",
+      }}
+      transition={{ duration: 0.2 }}
+      className="pointer-events-none fixed left-0 top-0 z-[9999] h-8 w-8 rounded-full border border-white/50 hidden md:block" // Hidden on touch devices
+    />
+  );
 }

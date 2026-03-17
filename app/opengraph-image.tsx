@@ -16,7 +16,7 @@ export default async function Image() {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    backgroundColor: "#000000",
+                            backgroundColor: "#000000",
                     backgroundImage:
                         "radial-gradient(circle at 25% 25%, #1e1b4b 0%, transparent 50%), radial-gradient(circle at 75% 75%, #0c0a3e 0%, transparent 50%)",
                 }}

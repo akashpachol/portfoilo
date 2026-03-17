@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Oswald } from "next/font/google";
-import { Providers } from "./providers";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { SmoothScroll } from "@/components/SmoothScroll";
+import { Geist, Geist_Mono, Oswald, JetBrains_Mono } from "next/font/google";
+import { SmoothScroll } from "@/components/ui/SmoothScroll";
+
+import "./globals.css";
 import { Preloader } from "@/components/ui/Preloader";
 import { CustomCursor } from "@/components/ui/Cursor";
-import { Grain } from "@/components/ui/Grain";
-import { ParallaxBackground } from "@/components/ui/ParallaxBackground";
-import "./globals.css";
+import { Navbar } from "@/components/layout/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,6 +21,11 @@ const oswald = Oswald({
   variable: "--font-oswald",
   subsets: ["latin"],
   weight: ["400", "500", "700"],
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -103,21 +105,16 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${oswald.variable} antialiased bg-black text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} ${oswald.variable} ${jetBrainsMono.variable} font-sans antialiased bg-background text-foreground selection:bg-foreground/20 selection:text-foreground`}
       >
-        {/* <Providers> */}
         <SmoothScroll>
           <Preloader />
           <CustomCursor />
-          <ParallaxBackground />
-          <Grain />
           <Navbar />
           <main className="min-h-screen">
             {children}
           </main>
-          <Footer />
         </SmoothScroll>
-        {/* </Providers> */}
       </body>
     </html>
   );
