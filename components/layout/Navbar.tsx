@@ -40,8 +40,10 @@ export function Navbar() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-12 md:py-6 transition-all duration-500 ${
-        isScrolled ? "bg-background/70 backdrop-blur-xl border-b border-white/10 dark:border-white/5 shadow-sm" : "bg-transparent border-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-12 md:py-5 transition-all duration-500 ${
+        isScrolled
+          ? "bg-[#050510]/70 backdrop-blur-2xl border-b border-white/5 shadow-lg shadow-black/20"
+          : "bg-transparent border-transparent"
       }`}
     >
       <a href="/" className="text-xl md:text-2xl font-bold tracking-tighter text-foreground">
@@ -87,7 +89,7 @@ export function Navbar() {
             animate={{ clipPath: "circle(150% at right top)" }}
             exit={{ clipPath: "circle(0% at right top)", transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] } }}
             transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 min-h-screen bg-background z-[55] flex flex-col justify-center items-center px-6"
+            className="fixed inset-0 min-h-screen bg-[#050510] z-[55] flex flex-col justify-center items-center px-6"
           >
             <nav className="flex flex-col items-center gap-10 w-full">
               {links.map((link, i) => (

@@ -2,6 +2,7 @@ import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Projects } from "@/components/sections/Projects";
 import { Experience } from "@/components/sections/Experience";
+import { Skills } from "@/components/sections/Skills";
 import { Contact } from "@/components/sections/Contact";
 
 const jsonLd = {
@@ -25,11 +26,12 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main className="flex flex-col min-h-screen bg-background text-foreground selection:bg-foreground/20 selection:text-foreground">
+      <main className="flex flex-col w-full bg-[#050510] text-foreground selection:bg-blue-500/20 selection:text-white">
         <Hero />
         <About />
         <Projects />
         <Experience />
+        <Skills />
         <Contact />
       </main>
     </>

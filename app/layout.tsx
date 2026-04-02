@@ -105,13 +105,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${oswald.variable} ${jetBrainsMono.variable} font-sans antialiased bg-background text-foreground selection:bg-foreground/20 selection:text-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} ${oswald.variable} ${jetBrainsMono.variable} font-sans antialiased bg-[#050510] text-foreground selection:bg-blue-500/20 selection:text-white`}
       >
         <SmoothScroll>
           <Preloader />
           <CustomCursor />
           <Navbar />
-          <main className="min-h-screen">
+          <main className="min-h-screen flex flex-col">
             {children}
           </main>
         </SmoothScroll>
