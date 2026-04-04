@@ -131,7 +131,7 @@ export function Contact() {
 
               <div className="flex flex-col gap-3 mt-2">
                 {[
-                  { Icon: Mail,   label: "Email",    value: "hello@akash.dev" },
+                  { Icon: Mail,   label: "Email",    value: "akashpachol2001@gmail.com" },
                   { Icon: MapPin, label: "Location", value: "India" },
                   { Icon: Zap,    label: "Response", value: "Within 24 hours" },
                 ].map(({ Icon, label, value }) => (

@@ -59,94 +59,8 @@ const floatingTags = [
   "Prisma", "Docker", "Git", "GSAP", "TurboRepo",
 ];
 
-function SkillBar({ name, level, accent, index }: { name: string; level: number; accent: string; index: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-      className="flex flex-col gap-2"
-    >
-      <div className="flex justify-between items-center">
-        <span className="text-xs font-mono text-white/50 uppercase tracking-wider">{name}</span>
-        <motion.span
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: index * 0.08 + 0.3 }}
-          className="text-xs font-mono"
-          style={{ color: `${accent}99` }}
-        >
-          {level}%
-        </motion.span>
-      </div>
-      <div className="h-[3px] rounded-full bg-white/5 overflow-hidden">
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: `${level}%` }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, delay: index * 0.08 + 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="h-full rounded-full relative"
-          style={{ background: `linear-gradient(90deg, ${accent}80, ${accent})` }}
-        >
-          {/* Shimmer */}
-          <motion.div
-            animate={{ x: ["-100%", "200%"] }}
-            transition={{ duration: 1.5, delay: index * 0.08 + 1, ease: "easeInOut" }}
-            className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-          />
-        </motion.div>
-      </div>
-    </motion.div>
-  );
-}
 
-function ExpertiseCard({ group, gi }: { group: (typeof expertise)[0]; gi: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] });
-  const y = useTransform(scrollYProgress, [0, 1], [80, 0]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [0.95, 1]);
 
-  return (
-    <motion.div
-      ref={ref}
-      whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.3 } }}
-      className="glass rounded-3xl p-8 flex flex-col gap-8 border group cursor-default"
-      style={{
-        y, opacity, scale,
-        borderColor: group.border,
-        boxShadow: `0 0 40px ${group.glow}, 0 0 0 1px ${group.border}`,
-        background: `linear-gradient(135deg, ${group.glow}, transparent)`,
-      } }
-    >
-      {/* Card header */}
-      <div className="flex items-start justify-between">
-        <div className="flex flex-col gap-1">
-          <span className="text-xs font-mono tracking-widest uppercase" style={{ color: `${group.accent}80` }}>
-            {group.number}
-          </span>
-          <h3 className="text-xl font-bold text-white">{group.category}</h3>
-        </div>
-        {/* Animated ring */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-          className="w-10 h-10 rounded-full border flex-shrink-0"
-          style={{ borderColor: `${group.accent}30`, borderTopColor: group.accent }}
-        />
-      </div>
-
-      {/* Skill bars */}
-      <div className="flex flex-col gap-4">
-        {group.skills.map((skill, si) => (
-          <SkillBar key={skill.name} name={skill.name} level={skill.level} accent={group.accent} index={si} />
-        ))}
-      </div>
-    </motion.div>
-  );
-}
 
 export function Skills() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -192,12 +106,7 @@ export function Skills() {
             </div>
           </motion.div>
 
-          {/* Cards grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {expertise.map((group, gi) => (
-              <ExpertiseCard key={group.category} group={group} gi={gi} />
-            ))}
-          </div>
+   
 
           {/* Animated floating tags row */}
           <div className="relative overflow-hidden py-4">
