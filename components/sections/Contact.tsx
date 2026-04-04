@@ -27,7 +27,6 @@ function MagneticIcon({ Icon, label, href }: { Icon: React.ElementType; label: s
   return (
     <motion.a
       href={href}
-      style={{ x: sx, y: sy }}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       whileHover={{ scale: 1.1 }}
@@ -37,7 +36,7 @@ function MagneticIcon({ Icon, label, href }: { Icon: React.ElementType; label: s
         border: "1px solid rgba(255,255,255,0.08)",
         backdropFilter: "blur(12px)",
         x: sx, y: sy,
-      } as React.CSSProperties}
+      }}
       data-cursor={label}
     >
       <Icon className="w-4 h-4" />

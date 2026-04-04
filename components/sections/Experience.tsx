@@ -11,6 +11,7 @@ import {
 import { useRef, useState, useEffect } from "react";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/ui/Section";
+//
 
 const experiences = [
   {
@@ -128,7 +129,6 @@ function ExperienceCard({ exp, cardIndex }: { exp: (typeof experiences)[0]; card
         style={{ perspective: 1000 }}
       >
         <motion.div
-          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           animate={{ y: [0, -6, 0] }}
           transition={{
             y: { duration: 5 + cardIndex, repeat: Infinity, ease: "easeInOut", delay: cardIndex * 1.2 },
@@ -138,6 +138,7 @@ function ExperienceCard({ exp, cardIndex }: { exp: (typeof experiences)[0]; card
           whileHover={{ scale: 1.025 }}
           className="relative rounded-[24px] overflow-hidden cursor-default group"
           style={{
+            rotateX, rotateY, transformStyle: "preserve-3d",
             background: `linear-gradient(${exp.gradient})`,
             backdropFilter: "blur(24px)",
             WebkitBackdropFilter: "blur(24px)",
@@ -285,25 +286,22 @@ export function Experience() {
         {/* ── Ambient orbs ── */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <motion.div
-            style={{ y: orb1Y }}
             className="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full"
             animate={{ opacity: [0.04, 0.08, 0.04] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            style={{ background: "radial-gradient(circle, rgba(79,142,255,1) 0%, transparent 70%)", y: orb1Y } as React.CSSProperties}
+            style={{ background: "radial-gradient(circle, rgba(79,142,255,1) 0%, transparent 70%)", y: orb1Y }}
           />
           <motion.div
-            style={{ y: orb2Y }}
             className="absolute top-1/2 -right-48 w-[500px] h-[500px] rounded-full"
             animate={{ opacity: [0.05, 0.1, 0.05] }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            style={{ background: "radial-gradient(circle, rgba(168,85,247,1) 0%, transparent 70%)", y: orb2Y } as React.CSSProperties}
+            style={{ background: "radial-gradient(circle, rgba(168,85,247,1) 0%, transparent 70%)", y: orb2Y }}
           />
           <motion.div
-            style={{ y: orb3Y }}
             className="absolute -bottom-32 left-1/3 w-[400px] h-[400px] rounded-full"
             animate={{ opacity: [0.03, 0.07, 0.03] }}
             transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-            style={{ background: "radial-gradient(circle, rgba(34,211,238,1) 0%, transparent 70%)", y: orb3Y } as React.CSSProperties}
+            style={{ background: "radial-gradient(circle, rgba(34,211,238,1) 0%, transparent 70%)", y: orb3Y }}
           />
           {/* Grid overlay */}
           <div

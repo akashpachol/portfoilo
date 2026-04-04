@@ -112,15 +112,14 @@ function ExpertiseCard({ group, gi }: { group: (typeof expertise)[0]; gi: number
   return (
     <motion.div
       ref={ref}
-      style={{ y, opacity, scale }}
-      whileHover={{ y: -8, scale: 1.02 }}
-      transition={{ hover: { duration: 0.3 } }}
+      whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.3 } }}
       className="glass rounded-3xl p-8 flex flex-col gap-8 border group cursor-default"
       style={{
+        y, opacity, scale,
         borderColor: group.border,
         boxShadow: `0 0 40px ${group.glow}, 0 0 0 1px ${group.border}`,
         background: `linear-gradient(135deg, ${group.glow}, transparent)`,
-      } as React.CSSProperties}
+      } }
     >
       {/* Card header */}
       <div className="flex items-start justify-between">
