@@ -1,98 +1,63 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export function CustomCursor() {
-  const [variant, setVariant] = useState<"default" | "hover" | "click">("default");
-  const [label, setLabel] = useState("");
-  const cursorX = useMotionValue(-200);
-  const cursorY = useMotionValue(-200);
+  const [isVisible, setIsVisible] = useState(false);
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
 
-  const springCfg = { damping: 28, stiffness: 600, mass: 0.5 };
-  const x = useSpring(cursorX, springCfg);
-  const y = useSpring(cursorY, springCfg);
+  // Physics-based spring configuration for the outer follow ring
+  const ringSpringConfig = { damping: 30, stiffness: 220, mass: 0.6 };
+  const ringX = useSpring(cursorX, ringSpringConfig);
+  const ringY = useSpring(cursorY, ringSpringConfig);
 
-  /* Trailing dot — slower spring */
-  const trailX = useSpring(cursorX, { damping: 40, stiffness: 200 });
-  const trailY = useSpring(cursorY, { damping: 40, stiffness: 200 });
+  // Fast spring for the inner dot
+  const dotSpringConfig = { damping: 40, stiffness: 400, mass: 0.2 };
+  const dotX = useSpring(cursorX, dotSpringConfig);
+  const dotY = useSpring(cursorY, dotSpringConfig);
 
   useEffect(() => {
-    if (!window.matchMedia("(pointer: fine)").matches) return;
-
-    const move = (e: MouseEvent) => {
+    const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
-    };
-
-    const over = (e: MouseEvent) => {
-      const el = (e.target as HTMLElement).closest("a,button,[data-cursor]");
-      if (el) {
-        setVariant("hover");
-        setLabel((el as HTMLElement).dataset.cursor || "");
-      } else {
-        setVariant("default");
-        setLabel("");
+      if (!isVisible) {
+        setIsVisible(true);
       }
     };
 
-    const down = () => setVariant("click");
-    const up = () => setVariant((v) => (v === "click" ? "default" : v));
-
-    window.addEventListener("mousemove", move);
-    window.addEventListener("mouseover", over);
-    window.addEventListener("mousedown", down);
-    window.addEventListener("mouseup", up);
-    return () => {
-      window.removeEventListener("mousemove", move);
-      window.removeEventListener("mouseover", over);
-      window.removeEventListener("mousedown", down);
-      window.removeEventListener("mouseup", up);
+    const handleMouseLeave = () => {
+      setIsVisible(false);
     };
-  }, [cursorX, cursorY]);
+
+    window.addEventListener("mousemove", moveCursor);
+    document.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      window.removeEventListener("mousemove", moveCursor);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [cursorX, cursorY, isVisible]);
+
+  if (!isVisible) return null;
 
   return (
     <>
-      {/* Main cursor ring */}
+      {/* Outer follow ring */}
       <motion.div
-        className="pointer-events-none fixed z-[9999] hidden md:flex items-center justify-center"
+        className="pointer-events-none fixed left-0 top-0 z-[100] hidden h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[color:var(--primary)]/60 mix-blend-difference md:block"
         style={{
-          translateX: x,
-          translateY: y,
-          x: "-50%",
-          y: "-50%",
+          x: ringX,
+          y: ringY,
         }}
-        animate={{
-          width: variant === "hover" ? 48 : variant === "click" ? 20 : 32,
-          height: variant === "hover" ? 48 : variant === "click" ? 20 : 32,
-          opacity: 1,
-        }}
-        transition={{ duration: 0.2, ease: "easeOut" }}
-      >
-        <motion.div
-          className="w-full h-full rounded-full border"
-          animate={{
-            borderColor: variant === "hover" ? "rgba(79,142,255,0.8)" : "rgba(255,255,255,0.4)",
-            backgroundColor: variant === "click" ? "rgba(79,142,255,0.3)" : "transparent",
-            boxShadow: variant === "hover" ? "0 0 16px rgba(79,142,255,0.4)" : "none",
-          }}
-          transition={{ duration: 0.2 }}
-        />
-        {label && (
-          <span className="absolute text-[9px] font-mono text-white/70 tracking-widest uppercase whitespace-nowrap">
-            {label}
-          </span>
-        )}
-      </motion.div>
-
-      {/* Trailing dot */}
+      />
+      {/* Inner dot */}
       <motion.div
-        className="pointer-events-none fixed z-[9998] hidden md:block w-1.5 h-1.5 rounded-full bg-blue-400/60"
+        className="pointer-events-none fixed left-0 top-0 z-[100] hidden h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--primary)] md:block"
         style={{
-          translateX: trailX,
-          translateY: trailY,
-          x: "-50%",
-          y: "-50%",
+          x: dotX,
+          y: dotY,
         }}
       />
     </>

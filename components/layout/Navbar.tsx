@@ -1,138 +1,76 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function Navbar() {
-  const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const links = ["About", "Projects", "Experience", "Contact"];
 
   useEffect(() => {
-    setMounted(true);
-    
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Prevent scrolling when mobile menu is open
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isMobileMenuOpen]);
-
   return (
-    <motion.header
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-12 md:py-5 transition-all duration-500 ${
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? "bg-[#050510]/70 backdrop-blur-2xl border-b border-white/5 shadow-lg shadow-black/20"
-          : "bg-transparent border-transparent"
+          ? "py-4 bg-black/40 backdrop-blur-xl border-b border-white/5"
+          : "py-6 bg-transparent"
       }`}
     >
-      <a href="/" className="text-xl md:text-2xl font-bold tracking-tighter text-foreground">
-        Akash.
-      </a>
-
-      <nav className="hidden md:flex items-center gap-8">
-        {links.map((link) => (
-          <a
-            key={link}
-            href={`#${link.toLowerCase()}`}
-            className="text-xs tracking-widest uppercase font-mono text-zinc-500 hover:text-foreground transition-colors"
-          >
-            {link}
-          </a>
-        ))}
-      </nav>
-
-      <div className="flex items-center gap-6">
-        <a
-          href="#contact"
-          className="hidden md:flex items-center gap-2 text-xs tracking-widest uppercase font-mono text-foreground"
-        >
-          Let's Talk
-          <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+      <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 md:px-10">
+        <a href="#top" className="group flex items-center gap-3">
+          <span className="relative grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/5 font-display text-base italic">
+            <span className="absolute inset-0 rounded-full glow-orange opacity-50"></span>
+            <span className="relative text-white">A</span>
+          </span>
+          <span className="hidden font-mono text-[11px] uppercase tracking-[0.3em] text-white/60 md:block">
+            Akash P · Portfolio · ’26
+          </span>
         </a>
         
-        {/* Mobile Menu Toggle - higher z-index to stay above full screen menu */}
-        <button
-          className="md:hidden text-zinc-500 hover:text-foreground transition-colors relative z-[60]"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle mobile menu"
-        >
-          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
-
-      {/* Full Screen Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ clipPath: "circle(0% at right top)" }}
-            animate={{ clipPath: "circle(150% at right top)" }}
-            exit={{ clipPath: "circle(0% at right top)", transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] } }}
-            transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 min-h-screen bg-[#050510] z-[55] flex flex-col justify-center items-center px-6"
+        <nav className="hidden items-center gap-1 rounded-full border border-white/10 px-2 py-2 backdrop-blur-xl md:flex transition-colors bg-white/[0.03]">
+          <a
+            href="#work"
+            className="relative rounded-full px-4 py-1.5 text-[12px] uppercase tracking-[0.2em] text-white/70 transition-colors hover:text-white"
           >
-            <nav className="flex flex-col items-center gap-10 w-full">
-              {links.map((link, i) => (
-                <motion.a
-                  key={link}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10, transition: { duration: 0.2 } }}
-                  transition={{ duration: 0.5, delay: 0.2 + (i * 0.1), ease: [0.16, 1, 0.3, 1] }}
-                  href={`#${link.toLowerCase()}`}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-foreground hover:text-zinc-400 transition-colors"
-                >
-                  {link}
-                </motion.a>
-              ))}
-              
-              <motion.a
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                transition={{ duration: 0.5, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                href="#contact"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="mt-8 flex items-center justify-center gap-3 px-8 py-4 bg-foreground text-background rounded-full font-medium hover:opacity-80 transition-opacity w-full sm:w-auto"
-              >
-                Let's Talk
-              </motion.a>
-            </nav>
-            
-            {/* Decorative element for menu */}
-            <motion.div 
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 0.05 }}
-               exit={{ opacity: 0 }}
-               transition={{ duration: 1, delay: 0.4 }}
-               className="absolute bottom-10 left-10 text-[10vw] font-bold tracking-tighter pointer-events-none"
-            >
-              Akash.
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+            Work
+          </a>
+          <a
+            href="#about"
+            className="relative rounded-full px-4 py-1.5 text-[12px] uppercase tracking-[0.2em] text-white/70 transition-colors hover:text-white"
+          >
+            About
+          </a>
+          <a
+            href="#experience"
+            className="relative rounded-full px-4 py-1.5 text-[12px] uppercase tracking-[0.2em] text-white/70 transition-colors hover:text-white"
+          >
+            Experience
+          </a>
+          <a
+            href="#contact"
+            className="relative rounded-full px-4 py-1.5 text-[12px] uppercase tracking-[0.2em] text-white/70 transition-colors hover:text-white"
+          >
+            Contact
+          </a>
+        </nav>
+
+        <a
+          href="#contact"
+          className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-white backdrop-blur-md transition-all hover:border-[color:var(--primary)]/60 hover:text-[color:var(--primary)]"
+        >
+          Available
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--primary)] opacity-75"></span>
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[color:var(--primary)]"></span>
+          </span>
+        </a>
+      </div>
+    </header>
   );
 }

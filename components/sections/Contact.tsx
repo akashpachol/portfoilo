@@ -1,285 +1,176 @@
 "use client";
 
-import { motion, useMotionValue, useSpring } from "framer-motion";
-import { useRef, useState } from "react";
-import { Container } from "@/components/layout/Container";
-import { ArrowUpRight, CheckCircle2, Mail, MapPin, Zap, Github, Linkedin, Twitter } from "lucide-react";
-
-const socials = [
-  { Icon: Github,   label: "GitHub",   href: "#" },
-  { Icon: Linkedin, label: "LinkedIn", href: "#" },
-  { Icon: Twitter,  label: "Twitter",  href: "#" },
-];
-
-function MagneticIcon({ Icon, label, href }: { Icon: React.ElementType; label: string; href: string }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 300, damping: 20 });
-  const sy = useSpring(y, { stiffness: 300, damping: 20 });
-
-  const onMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    x.set((e.clientX - r.left - r.width / 2) * 0.4);
-    y.set((e.clientY - r.top - r.height / 2) * 0.4);
-  };
-  const onLeave = () => { x.set(0); y.set(0); };
-
-  return (
-    <motion.a
-      href={href}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      whileHover={{ scale: 1.1 }}
-      className="w-11 h-11 rounded-2xl flex items-center justify-center text-white/40 hover:text-white transition-colors"
-      style={{
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        backdropFilter: "blur(12px)",
-        x: sx, y: sy,
-      }}
-      data-cursor={label}
-    >
-      <Icon className="w-4 h-4" />
-    </motion.a>
-  );
-}
+import { motion } from "framer-motion";
+import { Mail, MapPin, Linkedin, Github, ArrowUpRight } from "lucide-react";
 
 export function Contact() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState("");
-  const [focused, setFocused] = useState<string | null>(null);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setError("");
-    const formData = new FormData(e.currentTarget);
-    formData.append("access_key", "f72041b4-5b01-41eb-a33c-2dedc743c313");
-    try {
-      const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData });
-      const data = await res.json();
-      if (data.success) { setIsSuccess(true); (e.target as HTMLFormElement).reset(); }
-      else setError("Something went wrong. Please try again.");
-    } catch { setError("Failed to send. Check your connection."); }
-    finally { setIsSubmitting(false); }
+  const fadeInUp = {
+    initial: { opacity: 0, filter: "blur(8px)", y: 24 },
+    whileInView: { opacity: 1, filter: "blur(0px)", y: 0 },
+    viewport: { once: true, margin: "-100px" },
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
   };
 
-  const inputClass = (name: string) =>
-    `w-full rounded-xl px-4 py-3 text-white text-sm outline-none transition-all duration-300 placeholder:text-white/20 ${
-      focused === name
-        ? "border-blue-500/40 bg-white/8"
-        : "border-white/8 bg-white/4"
-    }`;
-
   return (
-    <footer id="contact" className="relative py-16 md:py-20 overflow-hidden">
-      {/* Orbs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px]"
-          style={{ background: "radial-gradient(circle, rgba(79,142,255,0.07) 0%, transparent 70%)" }}
+    <>
+      {/* ── SECTION 8: CONTACT ── */}
+      <section
+        id="contact"
+        className="relative isolate overflow-hidden border-t border-white/10 bg-black px-6 py-32 md:px-10 md:py-48"
+      >
+        {/* Ambient bottom glow */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 -bottom-1/2 -z-10 h-[120%] glow-orange opacity-70 blur-[120px]"
         />
-        <div className="absolute top-0 right-1/4 w-[400px] h-[400px] rounded-full blur-[100px]"
-          style={{ background: "radial-gradient(circle, rgba(168,85,247,0.07) 0%, transparent 70%)" }}
-        />
-      </div>
 
-      <Container className="relative z-10">
-        <div className="flex flex-col gap-10">
+        <div className="mx-auto max-w-[1400px]">
           {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="flex flex-col gap-4"
-          >
-            <div className="flex items-center gap-4">
-              <span className="text-white/25 font-mono text-sm tracking-widest">05</span>
-              <div className="w-10 h-[1px] bg-white/10" />
-              <span className="text-white/25 font-mono text-xs tracking-[0.3em] uppercase">Contact</span>
-            </div>
-            <div className="overflow-hidden">
-              <motion.h2
-                initial={{ y: "100%" }}
-                whileInView={{ y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                className="text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-bold tracking-tighter text-white leading-[1.05]"
-              >
-                Let&apos;s create<br />
-                <span className="italic font-light grad-purple-cyan">something.</span>
-              </motion.h2>
+          <motion.div {...fadeInUp}>
+            <div className="flex items-center gap-3">
+              <span className="h-px w-10 bg-white/30" />
+              <span className="font-mono text-[11px] uppercase tracking-[0.32em] text-white/50">
+                (08) — Contact
+              </span>
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-start">
-            {/* Left */}
+          <motion.div {...fadeInUp}>
+            <h2 className="mt-8 font-display text-[14vw] leading-[0.92] tracking-[-0.02em] text-balance md:text-[10vw] text-white">
+              Let’s build something{" "}
+              <em className="text-[color:var(--primary)] not-italic font-normal">amazing</em>{" "}
+              together.
+            </h2>
+          </motion.div>
+
+          <div className="mt-16 grid gap-10 md:grid-cols-12">
+            
+            {/* Description */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="lg:col-span-2 flex flex-col gap-6"
+              {...fadeInUp}
+              className="md:col-span-6 flex flex-col justify-between"
             >
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full w-fit"
-                style={{ background: "rgba(34,211,238,0.08)", border: "1px solid rgba(34,211,238,0.18)", backdropFilter: "blur(12px)" }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                <span className="text-xs font-mono text-cyan-400/60 tracking-widest uppercase">Available for freelance</span>
-              </div>
-
-              <div className="flex flex-col gap-3 mt-2">
-                {[
-                  { Icon: Mail,   label: "Email",    value: "akashpachol2001@gmail.com" },
-                  { Icon: MapPin, label: "Location", value: "India" },
-                  { Icon: Zap,    label: "Response", value: "Within 24 hours" },
-                ].map(({ Icon, label, value }) => (
-                  <motion.div
-                    key={label}
-                    whileHover={{ x: 4, scale: 1.01 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex items-center gap-4 p-4 rounded-2xl"
-                    style={{
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.06)",
-                      backdropFilter: "blur(12px)",
-                    }}
-                  >
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{ background: "rgba(79,142,255,0.1)", border: "1px solid rgba(79,142,255,0.15)" }}
-                    >
-                      <Icon className="w-4 h-4 text-blue-400/70" />
-                    </div>
-                    <div>
-                      <div className="text-[10px] text-white/25 font-mono uppercase tracking-widest">{label}</div>
-                      <div className="text-sm text-white/55 mt-0.5">{value}</div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="flex items-center gap-3 mt-2">
-                {socials.map((s) => (
-                  <MagneticIcon key={s.label} {...s} />
-                ))}
+              <p className="max-w-md text-lg text-white/65 leading-relaxed">
+                I’m always interested in exciting products, scalable platforms
+                and innovative frontend experiences. Drop a line — let’s ship
+                something memorable.
+              </p>
+              
+              {/* Button */}
+              <div className="mt-10 md:mt-0">
+                <a
+                  href="mailto:akashpachol2001@gmail.com"
+                  className="group relative inline-flex items-center gap-3 rounded-full px-7 py-4 text-sm uppercase tracking-[0.18em] transition-[transform,background,color] duration-300 ease-out will-change-transform bg-[color:var(--primary)] text-[color:var(--primary-foreground)] shadow-[0_10px_60px_-10px_rgba(255,138,61,0.6)] hover:shadow-[0_20px_80px_-10px_rgba(255,138,61,0.8)] hover:scale-[1.02]"
+                >
+                  <span className="relative z-10 flex items-center gap-3">
+                    Start a Conversation
+                    <span className="inline-block h-px w-6 bg-current opacity-80 transition-all duration-300 group-hover:w-10" />
+                  </span>
+                </a>
               </div>
             </motion.div>
 
-            {/* Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.15 }}
-              className="lg:col-span-3"
-            >
-              <form
-                onSubmit={handleSubmit}
-                className="relative rounded-[20px] md:rounded-[24px] p-6 md:p-10 flex flex-col gap-5 overflow-hidden"
-                style={{
-                  background: "rgba(255,255,255,0.03)",
-                  backdropFilter: "blur(40px)",
-                  WebkitBackdropFilter: "blur(40px)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  boxShadow: "0 24px 80px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)",
-                }}
-              >
-                {/* Top glow line */}
-                <div className="absolute top-0 left-0 right-0 h-[1px]"
-                  style={{ background: "linear-gradient(90deg, transparent, rgba(79,142,255,0.4), rgba(168,85,247,0.4), transparent)" }}
-                />
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {[
-                    { id: "name",  type: "text",  label: "Name",  placeholder: "John Doe" },
-                    { id: "email", type: "email", label: "Email", placeholder: "john@example.com" },
-                  ].map((f) => (
-                    <div key={f.id} className="flex flex-col gap-2">
-                      <label htmlFor={f.id} className="text-[10px] text-white/25 font-mono uppercase tracking-[0.25em]">{f.label}</label>
-                      <input
-                        type={f.type} id={f.id} name={f.id} required
-                        placeholder={f.placeholder}
-                        onFocus={() => setFocused(f.id)}
-                        onBlur={() => setFocused(null)}
-                        className={inputClass(f.id)}
-                        style={{ border: "1px solid", borderColor: focused === f.id ? "rgba(79,142,255,0.35)" : "rgba(255,255,255,0.07)", background: focused === f.id ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.03)" }}
-                      />
+            {/* Contact details list */}
+            <motion.div {...fadeInUp} className="md:col-span-6">
+              <div className="space-y-2">
+                
+                {/* Email */}
+                <a href="mailto:akashpachol2001@gmail.com" className="block group">
+                  <div className="flex items-center justify-between border-b border-white/10 py-5 transition-colors duration-300 group-hover:border-[color:var(--primary)]/60">
+                    <div className="flex items-center gap-4">
+                      <Mail className="h-4 w-4 text-[color:var(--primary)]" />
+                      <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-white/50">
+                        Email
+                      </span>
                     </div>
-                  ))}
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="subject" className="text-[10px] text-white/25 font-mono uppercase tracking-[0.25em]">Subject</label>
-                  <input
-                    type="text" id="subject" name="subject"
-                    placeholder="Project inquiry"
-                    onFocus={() => setFocused("subject")}
-                    onBlur={() => setFocused(null)}
-                    className={inputClass("subject")}
-                    style={{ border: "1px solid", borderColor: focused === "subject" ? "rgba(79,142,255,0.35)" : "rgba(255,255,255,0.07)", background: focused === "subject" ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.03)" }}
-                  />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="message" className="text-[10px] text-white/25 font-mono uppercase tracking-[0.25em]">Message</label>
-                  <textarea
-                    id="message" name="message" required rows={5}
-                    placeholder="Tell me about your project..."
-                    onFocus={() => setFocused("message")}
-                    onBlur={() => setFocused(null)}
-                    className={`${inputClass("message")} resize-none`}
-                    style={{ border: "1px solid", borderColor: focused === "message" ? "rgba(79,142,255,0.35)" : "rgba(255,255,255,0.07)", background: focused === "message" ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.03)" }}
-                  />
-                </div>
-
-                {error && <p className="text-red-400 text-sm font-mono">{error}</p>}
-
-                <div className="flex justify-end pt-1">
-                  {isSuccess ? (
-                    <div className="flex items-center gap-3 px-7 py-3.5 rounded-2xl font-medium text-green-400"
-                      style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)" }}
-                    >
-                      Message Sent <CheckCircle2 className="w-4 h-4" />
+                    <div className="flex items-center gap-3">
+                      <span className="font-display text-xl md:text-2xl text-white transition-colors duration-300 group-hover:text-[color:var(--primary)]">
+                        akashpachol2001@gmail.com
+                      </span>
+                      <ArrowUpRight className="h-4 w-4 text-white/40 transition-all duration-300 group-hover:rotate-45 group-hover:text-[color:var(--primary)]" />
                     </div>
-                  ) : (
-                    <motion.button
-                      type="submit"
-                      disabled={isSubmitting}
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      className="group relative flex items-center gap-3 px-8 py-3.5 rounded-2xl text-white font-medium overflow-hidden disabled:opacity-50 transition-opacity"
-                      style={{
-                        background: "linear-gradient(135deg, rgba(79,142,255,0.2), rgba(168,85,247,0.2))",
-                        border: "1px solid rgba(79,142,255,0.25)",
-                        backdropFilter: "blur(12px)",
-                      }}
-                      data-cursor="Send"
-                    >
-                      <motion.span
-                        initial={{ x: "-100%", skewX: "-15deg" }}
-                        whileHover={{ x: "300%" }}
-                        transition={{ duration: 0.6 }}
-                        className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/8 to-transparent pointer-events-none"
-                      />
-                      <span className="relative z-10">{isSubmitting ? "Sending..." : "Send Message"}</span>
-                      {!isSubmitting && (
-                        <ArrowUpRight className="w-4 h-4 relative z-10 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                      )}
-                    </motion.button>
-                  )}
+                  </div>
+                </a>
+
+                {/* Location */}
+                <div className="flex items-center justify-between border-b border-white/10 py-5">
+                  <div className="flex items-center gap-4">
+                    <MapPin className="h-4 w-4 text-[color:var(--primary)]" />
+                    <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-white/50">
+                      Based in
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="font-display text-xl md:text-2xl text-white">
+                      Kannur, India
+                    </span>
+                  </div>
                 </div>
-              </form>
+
+                {/* LinkedIn */}
+                <a
+                  href="https://linkedin.com/in/akashp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block group"
+                >
+                  <div className="flex items-center justify-between border-b border-white/10 py-5 transition-colors duration-300 group-hover:border-[color:var(--primary)]/60">
+                    <div className="flex items-center gap-4">
+                      <Linkedin className="h-4 w-4 text-[color:var(--primary)]" />
+                      <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-white/50">
+                        LinkedIn
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="font-display text-xl md:text-2xl text-white transition-colors duration-300 group-hover:text-[color:var(--primary)]">
+                        /in/akashp
+                      </span>
+                      <ArrowUpRight className="h-4 w-4 text-white/40 transition-all duration-300 group-hover:rotate-45 group-hover:text-[color:var(--primary)]" />
+                    </div>
+                  </div>
+                </a>
+
+                {/* GitHub */}
+                <a
+                  href="https://github.com/akashp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block group"
+                >
+                  <div className="flex items-center justify-between border-b border-white/10 py-5 transition-colors duration-300 group-hover:border-[color:var(--primary)]/60">
+                    <div className="flex items-center gap-4">
+                      <Github className="h-4 w-4 text-[color:var(--primary)]" />
+                      <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-white/50">
+                        GitHub
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="font-display text-xl md:text-2xl text-white transition-colors duration-300 group-hover:text-[color:var(--primary)]">
+                        @akashp
+                      </span>
+                      <ArrowUpRight className="h-4 w-4 text-white/40 transition-all duration-300 group-hover:rotate-45 group-hover:text-[color:var(--primary)]" />
+                    </div>
+                  </div>
+                </a>
+
+              </div>
             </motion.div>
-          </div>
 
-          {/* Footer bar */}
-          <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/5 gap-4">
-            <span className="text-white/20 text-sm font-mono">© {new Date().getFullYear()} Akash P. All rights reserved.</span>
-            <span className="text-white/12 text-xs font-mono uppercase tracking-widest">Next.js · Framer Motion · Tailwind</span>
           </div>
         </div>
-      </Container>
-    </footer>
+      </section>
+
+      {/* ── FOOTER ── */}
+      <footer className="relative border-t border-white/10 bg-black px-6 py-10 md:px-10">
+        <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+          <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-white/40">
+            © 2026 Akash P. — Crafted in Kannur.
+          </p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-white/40">
+            Next.js · React · TypeScript · TurboRepo
+          </p>
+        </div>
+      </footer>
+    </>
   );
 }
