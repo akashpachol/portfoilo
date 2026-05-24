@@ -8,7 +8,7 @@ export function Contact() {
     initial: { opacity: 0, filter: "blur(8px)", y: 24 },
     whileInView: { opacity: 1, filter: "blur(0px)", y: 0 },
     viewport: { once: true, margin: "-100px" },
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
   };
 
   return (

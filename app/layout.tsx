@@ -1,32 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Oswald, JetBrains_Mono } from "next/font/google";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
 
 import "./globals.css";
 import { Preloader } from "@/components/ui/Preloader";
 import { CustomCursor } from "@/components/ui/Cursor";
 import { Navbar } from "@/components/layout/Navbar";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const oswald = Oswald({
-  variable: "--font-oswald",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-});
-
-const jetBrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://akashpachol.vercel.app/"),
@@ -105,7 +83,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${oswald.variable} ${jetBrainsMono.variable} font-sans antialiased bg-[#050510] text-foreground selection:bg-blue-500/20 selection:text-white`}
+        className="font-sans antialiased bg-[#050505] text-foreground selection:bg-blue-500/20 selection:text-white"
       >
         <SmoothScroll>
           <Preloader />
