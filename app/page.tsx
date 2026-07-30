@@ -3,9 +3,7 @@
 import React, { useState } from "react";
 import { LiquidGlassNavbar } from "@/components/LiquidGlassNavbar";
 import { VideoScrubberBackground } from "@/components/VideoScrubberBackground";
-import { MainframeNavbar } from "@/components/MainframeNavbar";
 import { MainframeHero } from "@/components/MainframeHero";
-import { SkillCylinderCarousel } from "@/components/SkillCylinderCarousel";
 import { MainframeFeatures } from "@/components/MainframeFeatures";
 import { PartnerSection } from "@/components/PartnerSection";
 
@@ -37,7 +35,6 @@ export default function Home() {
       <MainframeHero onPillClick={handleAction} />
 
       {/* 4. 3D HORIZONTAL CYLINDER CAROUSEL WITH VOLUMETRIC SKILL CARDS */}
-      <SkillCylinderCarousel />
 
       {/* 5. FEATURES SECTION */}
       <MainframeFeatures onActionClick={handleAction} />

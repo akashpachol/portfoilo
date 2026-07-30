@@ -41,7 +41,7 @@ export const VideoScrubberBackground: React.FC = () => {
     const video = videoRef.current;
     if (!video || !video.duration) return;
 
-    if (Math.abs(video.currentTime - targetTimeRef.current) > 0.01) {
+    if (Math.abs(video.currentTime - targetTimeRef.current) > 0.05) {
       video.currentTime = targetTimeRef.current;
     } else {
       isSeekingRef.current = false;
