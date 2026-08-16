@@ -1,0 +1,47 @@
+export const skillsData = {
+  title: "A connected technical ecosystem.",
+  subtitle: "Hover a group to see it isolated from the rest of the stack.",
+  categories: [
+    {
+      name: "Frontend & Rendering Strategy",
+      skills: ["Next.js", "React.js", "TypeScript", "JavaScript", "SSR", "ISR", "SEO Optimization", "Performance Optimization"],
+    },
+    {
+      name: "Data & API Architecture",
+      skills: ["GraphQL", "Apollo Client", "REST APIs", "Node.js", "Express.js", "MongoDB"],
+    },
+    {
+      name: "Architecture & Tooling",
+      skills: ["TurboRepo", "Monorepo", "MVC", "Git", "GitHub", "Postman"],
+    },
+    {
+      name: "Styling & UI Systems",
+      skills: ["Tailwind CSS", "Material UI", "Bootstrap"],
+    },
+  ],
+  allSkills: [
+    "Next.js",
+    "React.js",
+    "TypeScript",
+    "JavaScript",
+    "Node.js",
+    "Express.js",
+    "GraphQL",
+    "Apollo Client",
+    "REST APIs",
+    "TurboRepo",
+    "Monorepo",
+    "MVC",
+    "MongoDB",
+    "Tailwind CSS",
+    "Material UI",
+    "Bootstrap",
+    "Git",
+    "GitHub",
+    "Postman",
+    "SSR",
+    "ISR",
+    "SEO Optimization",
+    "Performance Optimization",
+  ],
+};
