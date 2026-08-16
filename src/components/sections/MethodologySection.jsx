@@ -1,8 +1,15 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import TextReveal from "../ui/TextReveal";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function MethodologySection() {
+  const containerRef = useRef(null);
+
   const steps = [
     {
       num: "01",
@@ -26,8 +33,32 @@ export default function MethodologySection() {
     },
   ];
 
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(".method-card", {
+        yPercent: -8,
+        stagger: 0.1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="py-24 border-t border-[var(--border-color)]">
+    <section ref={containerRef} className="py-24 border-t border-[var(--border-color)]">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <TextReveal>
           <div className="text-xs font-mono font-semibold uppercase tracking-widest text-[var(--accent)] mb-4">
@@ -41,7 +72,7 @@ export default function MethodologySection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {steps.map((step, idx) => (
             <TextReveal key={step.num} delay={idx * 0.1}>
-              <div className="p-8 sm:p-10 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--border-hover)] transition-all duration-300">
+              <div className="method-card p-8 sm:p-10 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--border-hover)] transition-all duration-300">
                 <div className="text-sm font-mono font-bold text-[var(--accent)] mb-4">
                   {step.num}
                 </div>

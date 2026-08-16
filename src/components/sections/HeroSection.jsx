@@ -4,13 +4,15 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowDown } from "lucide-react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { siteConfig } from "@/config/site";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroSection() {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    // Respect prefers-reduced-motion
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
@@ -18,9 +20,9 @@ export default function HeroSection() {
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
+      // 1. Entrance timeline
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      // Step 1 & 2: Top micro copy fade up
       tl.fromTo(
         ".hero-meta-left",
         { opacity: 0, y: 15 },
@@ -32,7 +34,6 @@ export default function HeroSection() {
           { opacity: 1, y: 0, duration: 0.6 },
           "-=0.4"
         )
-        // Step 3: Large Headline line reveal
         .fromTo(
           ".hero-headline-line",
           { opacity: 0, y: 35 },
@@ -45,27 +46,58 @@ export default function HeroSection() {
           },
           "-=0.3"
         )
-        // Step 4: Description paragraph
         .fromTo(
           ".hero-description",
           { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: 0.6 },
           "-=0.4"
         )
-        // Step 5: Buttons
         .fromTo(
           ".hero-btn",
           { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 },
           "-=0.3"
         )
-        // Step 6: Scroll indicator
         .fromTo(
           ".hero-scroll",
           { opacity: 0 },
           { opacity: 1, duration: 0.5 },
           "-=0.2"
         );
+
+      // 2. Parallax scroll choreography
+      gsap.to(".hero-headline-container", {
+        yPercent: -15,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      gsap.to(".hero-meta-row", {
+        yPercent: -10,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      gsap.to(".hero-footer-grid", {
+        yPercent: -6,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
     }, containerRef);
 
     return () => ctx.revert();
@@ -89,7 +121,7 @@ export default function HeroSection() {
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 w-full z-10 my-auto flex flex-col justify-between h-full">
         {/* Top Metadata Row */}
-        <div className="flex flex-wrap items-start justify-between gap-4 pb-6 border-b border-[var(--border-color)]">
+        <div className="hero-meta-row flex flex-wrap items-start justify-between gap-4 pb-6 border-b border-[var(--border-color)]">
           <div className="hero-meta-left text-xs font-mono tracking-widest text-[var(--text-muted)] uppercase space-y-1">
             <div>{siteConfig.location}</div>
             <div>{siteConfig.experience}</div>
@@ -100,7 +132,7 @@ export default function HeroSection() {
         </div>
 
         {/* Main Display Headline */}
-        <div className="py-4">
+        <div className="hero-headline-container py-4">
           <h1
             className="text-[3.5rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[7.5rem] font-normal leading-[1.05] tracking-tight uppercase text-[var(--text-main)] selection:bg-amber-300 selection:text-slate-950"
             style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
@@ -118,7 +150,7 @@ export default function HeroSection() {
         </div>
 
         {/* Lower Content Grid */}
-        <div className="pt-6 border-t border-[var(--border-color)] grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
+        <div className="hero-footer-grid pt-6 border-t border-[var(--border-color)] grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
           {/* Description */}
           <div className="hero-description md:col-span-6 text-sm sm:text-base text-[var(--text-muted)] leading-relaxed font-normal">
             Building digital experiences that scale — 2.5+ years of production work with Next.js, React and modern frontend architecture.

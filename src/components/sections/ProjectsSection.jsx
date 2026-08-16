@@ -1,13 +1,55 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import TextReveal from "../ui/TextReveal";
 import { projectsData } from "@/config/projects";
 import { ArrowUpRight } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function ProjectsSection() {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(".project-card-num", {
+        yPercent: -12,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      gsap.to(".project-card-box", {
+        yPercent: -6,
+        stagger: 0.15,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="work" className="py-24 border-t border-[var(--border-color)]">
+    <section ref={containerRef} id="work" className="py-24 border-t border-[var(--border-color)]">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <TextReveal>
           <div className="text-xs font-mono font-semibold uppercase tracking-widest text-[var(--accent)] mb-4">
@@ -24,11 +66,11 @@ export default function ProjectsSection() {
         <div className="space-y-12">
           {projectsData.map((project, idx) => (
             <TextReveal key={project.id} delay={idx * 0.15}>
-              <div className="group relative p-8 sm:p-12 rounded-3xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)] transition-all duration-300">
+              <div className="project-card-box group relative p-8 sm:p-12 rounded-3xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)] transition-all duration-300">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                   {/* Left Column */}
                   <div className="space-y-4 max-w-2xl">
-                    <div className="flex items-center gap-3 font-mono text-xs text-[var(--accent)] tracking-widest">
+                    <div className="project-card-num flex items-center gap-3 font-mono text-xs text-[var(--accent)] tracking-widest">
                       <span>{project.id}</span>
                       {project.company && (
                         <>

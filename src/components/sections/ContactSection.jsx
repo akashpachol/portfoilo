@@ -1,13 +1,56 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import TextReveal from "../ui/TextReveal";
 import { siteConfig } from "@/config/site";
 import { Mail, Phone, Globe, MapPin, ArrowUpRight, Send } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function ContactSection() {
+  const containerRef = useRef(null);
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".contact-heading-line",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 75%",
+          },
+        }
+      );
+
+      gsap.to(".contact-form-box", {
+        yPercent: -5,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,15 +62,15 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-24 border-t border-[var(--border-color)]">
+    <section ref={containerRef} id="contact" className="py-24 border-t border-[var(--border-color)]">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <TextReveal>
           <div className="text-xs font-mono font-semibold uppercase tracking-widest text-[var(--accent)] mb-4">
             09 — Contact
           </div>
           <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-[var(--text-main)] mb-16">
-            Let&apos;s build something <br className="hidden sm:block" />
-            <span className="text-gradient">that lasts.</span>
+            <span className="contact-heading-line block">Let&apos;s build something</span>
+            <span className="contact-heading-line block text-gradient">that lasts.</span>
           </h2>
         </TextReveal>
 
@@ -37,7 +80,7 @@ export default function ContactSection() {
             <TextReveal delay={0.1}>
               <form
                 onSubmit={handleSubmit}
-                className="p-8 sm:p-10 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] space-y-6"
+                className="contact-form-box p-8 sm:p-10 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] space-y-6"
               >
                 <div>
                   <label className="block text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] mb-2">

@@ -1,11 +1,41 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import TextReveal from "../ui/TextReveal";
 import { GraduationCap } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function EducationSection() {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(".edu-card", {
+        yPercent: -5,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="py-24 border-t border-[var(--border-color)]">
+    <section ref={containerRef} className="py-24 border-t border-[var(--border-color)]">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <TextReveal>
           <div className="text-xs font-mono font-semibold uppercase tracking-widest text-[var(--accent)] mb-4">
@@ -14,7 +44,7 @@ export default function EducationSection() {
         </TextReveal>
 
         <TextReveal delay={0.1}>
-          <div className="p-8 sm:p-10 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] flex items-start gap-6 max-w-2xl">
+          <div className="edu-card p-8 sm:p-10 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] flex items-start gap-6 max-w-2xl">
             <div className="p-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--accent)] shrink-0">
               <GraduationCap className="w-7 h-7" />
             </div>

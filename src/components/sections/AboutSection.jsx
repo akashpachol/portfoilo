@@ -1,10 +1,51 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import TextReveal from "../ui/TextReveal";
 import { siteConfig } from "@/config/site";
 import { CheckCircle2, MapPin, Building2 } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutSection() {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(".about-card", {
+        yPercent: -10,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      gsap.to(".about-title", {
+        yPercent: -5,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const highlights = [
     "Scalable frontend architecture",
     "Performance optimization",
@@ -14,13 +55,13 @@ export default function AboutSection() {
   ];
 
   return (
-    <section id="about" className="py-24 border-t border-[var(--border-color)]">
+    <section ref={containerRef} id="about" className="py-24 border-t border-[var(--border-color)]">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <TextReveal>
           <div className="text-xs font-mono font-semibold uppercase tracking-widest text-[var(--accent)] mb-4">
             01 — About
           </div>
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[var(--text-main)] mb-12 max-w-4xl">
+          <h2 className="about-title text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[var(--text-main)] mb-12 max-w-4xl">
             Frontend engineer building scalable, performant, refined digital experiences.
           </h2>
         </TextReveal>
@@ -44,7 +85,7 @@ export default function AboutSection() {
           {/* Highlight Summary Card */}
           <div className="lg:col-span-5">
             <TextReveal delay={0.3}>
-              <div className="p-8 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] backdrop-blur-sm space-y-6">
+              <div className="about-card p-8 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] backdrop-blur-sm space-y-6">
                 <div>
                   <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-dim)] uppercase mb-1">
                     <Building2 className="w-3.5 h-3.5" />
