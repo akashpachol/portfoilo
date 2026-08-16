@@ -11,5 +11,5 @@ export const siteConfig = {
   url: "https://akashpachol.in",
   ogImage: "https://akash-p-cinematic-canvas.lovable.app/og-image.jpg",
   description:
-    "Akash P is a Next.js Developer with 2.5+ years of experience building scalable, performant web applications using Next.js, React, TypeScript, Node.js, GraphQL and modern frontend architecture.",
+    "Akash P is a Next.js Developer with 2.5+ years of experience building scalable, performant web applications using Next.js, React, TypeScript, Node.js, GraphQL and modern frontend architecture",
 };
