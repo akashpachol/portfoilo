@@ -1,21 +1,24 @@
 "use client";
 
 import TextReveal from "../ui/TextReveal";
-import { Zap, ShieldCheck, Gauge } from "lucide-react";
 
 export default function PerformanceSection() {
-  const metrics = [
-    { label: "Core Web Vitals", value: "95+", icon: Gauge },
-    { label: "LCP Target", value: "< 2.5s", icon: Zap },
-    { label: "CLS Target", value: "< 0.1", icon: ShieldCheck },
+  const appliedStrategies = [
+    "SSR APPLIED",
+    "ISR APPLIED",
+    "Lazy Loading APPLIED",
+    "Code Splitting APPLIED",
+    "SEO APPLIED",
+    "Reusable Components APPLIED",
+    "Scalable Architecture APPLIED",
   ];
 
   return (
     <section className="py-24 border-t border-[var(--border-color)]">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <TextReveal>
-          <div className="text-xs font-mono uppercase tracking-widest text-[var(--text-dim)] mb-4">
-            // PERFORMANCE
+          <div className="text-xs font-mono font-semibold uppercase tracking-widest text-[var(--accent)] mb-4">
+            07 — Performance
           </div>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[var(--text-main)] mb-6">
             Built to perform.
@@ -25,26 +28,19 @@ export default function PerformanceSection() {
           </p>
         </TextReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {metrics.map((m, idx) => {
-            const IconComponent = m.icon;
-            return (
-              <TextReveal key={m.label} delay={idx * 0.1}>
-                <div className="p-8 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] flex flex-col justify-between h-full">
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="text-sm font-medium text-[var(--text-muted)]">
-                      {m.label}
-                    </span>
-                    <IconComponent className="w-5 h-5 text-[var(--accent)]" />
-                  </div>
-                  <div className="text-4xl font-extrabold text-[var(--text-main)] font-mono">
-                    {m.value}
-                  </div>
-                </div>
-              </TextReveal>
-            );
-          })}
-        </div>
+        <TextReveal delay={0.1}>
+          <div className="flex flex-wrap gap-3">
+            {appliedStrategies.map((strat) => (
+              <span
+                key={strat}
+                className="px-4 py-2.5 rounded-full text-xs font-mono font-bold tracking-wider border border-[var(--border-hover)] bg-[var(--bg-card)] text-[var(--text-main)] shadow-sm"
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block mr-2 animate-pulse" />
+                {strat}
+              </span>
+            ))}
+          </div>
+        </TextReveal>
       </div>
     </section>
   );

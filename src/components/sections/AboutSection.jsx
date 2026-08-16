@@ -2,7 +2,7 @@
 
 import TextReveal from "../ui/TextReveal";
 import { siteConfig } from "@/config/site";
-import { CheckCircle2, MapPin } from "lucide-react";
+import { CheckCircle2, MapPin, Building2 } from "lucide-react";
 
 export default function AboutSection() {
   const highlights = [
@@ -17,9 +17,12 @@ export default function AboutSection() {
     <section id="about" className="py-24 border-t border-[var(--border-color)]">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <TextReveal>
-          <div className="text-xs font-mono uppercase tracking-widest text-[var(--text-dim)] mb-4">
-            // ABOUT ME
+          <div className="text-xs font-mono font-semibold uppercase tracking-widest text-[var(--accent)] mb-4">
+            01 — About
           </div>
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[var(--text-main)] mb-12 max-w-4xl">
+            Frontend engineer building scalable, performant, refined digital experiences.
+          </h2>
         </TextReveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
@@ -43,29 +46,38 @@ export default function AboutSection() {
             <TextReveal delay={0.3}>
               <div className="p-8 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] backdrop-blur-sm space-y-6">
                 <div>
+                  <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-dim)] uppercase mb-1">
+                    <Building2 className="w-3.5 h-3.5" />
+                    <span>Currently</span>
+                  </div>
                   <div className="text-xl font-bold text-[var(--text-main)]">
                     Next.js Developer
                   </div>
-                  <div className="text-sm font-medium text-[var(--accent)] mt-0.5">
+                  <div className="text-sm font-semibold text-[var(--accent)] mt-0.5">
                     Nexteons
                   </div>
                 </div>
 
-                <ul className="space-y-3">
-                  {highlights.map((item, i) => (
-                    <li
-                      key={i}
-                      className="flex items-center gap-3 text-sm text-[var(--text-muted)]"
-                    >
-                      <CheckCircle2 className="w-4 h-4 text-[var(--accent)] shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div>
+                  <div className="text-xs font-mono text-[var(--text-dim)] uppercase mb-3">
+                    Focus
+                  </div>
+                  <ul className="space-y-3">
+                    {highlights.map((item, i) => (
+                      <li
+                        key={i}
+                        className="flex items-center gap-3 text-sm text-[var(--text-muted)]"
+                      >
+                        <CheckCircle2 className="w-4 h-4 text-[var(--accent)] shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                <div className="pt-4 border-t border-[var(--border-color)] flex items-center gap-2 text-xs text-[var(--text-dim)]">
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>{siteConfig.location}</span>
+                <div className="pt-4 border-t border-[var(--border-color)] flex items-center gap-2 text-xs font-mono text-[var(--text-dim)]">
+                  <MapPin className="w-3.5 h-3.5 text-[var(--accent)]" />
+                  <span>Based in {siteConfig.location}</span>
                 </div>
               </div>
             </TextReveal>

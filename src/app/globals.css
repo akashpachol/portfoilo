@@ -2,31 +2,31 @@
 
 @layer base {
   :root {
-    --bg-primary: #0b0c10;
-    --bg-secondary: #131620;
-    --bg-card: rgba(255, 255, 255, 0.03);
-    --bg-card-hover: rgba(255, 255, 255, 0.06);
-    --border-color: rgba(255, 255, 255, 0.08);
-    --border-hover: rgba(255, 255, 255, 0.2);
+    --bg-primary: #0a0b0e;
+    --bg-secondary: #11131a;
+    --bg-card: rgba(255, 255, 255, 0.02);
+    --bg-card-hover: rgba(255, 255, 255, 0.05);
+    --border-color: rgba(255, 255, 255, 0.07);
+    --border-hover: rgba(255, 255, 255, 0.18);
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
     --text-dim: #64748b;
     --accent: #38bdf8;
-    --accent-glow: rgba(56, 189, 248, 0.15);
+    --accent-glow: rgba(56, 189, 248, 0.12);
   }
 
   [data-theme="light"] {
     --bg-primary: #f8fafc;
     --bg-secondary: #f1f5f9;
-    --bg-card: rgba(0, 0, 0, 0.03);
-    --bg-card-hover: rgba(0, 0, 0, 0.06);
+    --bg-card: rgba(0, 0, 0, 0.02);
+    --bg-card-hover: rgba(0, 0, 0, 0.05);
     --border-color: rgba(0, 0, 0, 0.08);
     --border-hover: rgba(0, 0, 0, 0.2);
     --text-main: #0f172a;
     --text-muted: #475569;
     --text-dim: #94a3b8;
     --accent: #0284c7;
-    --accent-glow: rgba(2, 132, 199, 0.12);
+    --accent-glow: rgba(2, 132, 199, 0.1);
   }
 }
 
@@ -47,38 +47,54 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Global Typography defaults */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+p {
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg-primary);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--border-hover);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
-/* Subtle grid background texture */
+/* Marquee infinite scroll keyframes */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Subtle grid texture */
 .bg-grid-pattern {
   background-image: linear-gradient(to right, var(--border-color) 1px, transparent 1px),
                     linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
-  background-size: 60px 60px;
+  background-size: 80px 80px;
 }
 
-/* Glassmorphism helpers */
-.glass-panel {
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border-color);
-}
-
-.glass-panel:hover {
-  border-color: var(--border-hover);
-  background: var(--bg-card-hover);
-}
-
-/* Glowing text highlight */
 .text-gradient {
   background: linear-gradient(135deg, var(--text-main) 0%, var(--text-muted) 100%);
   -webkit-background-clip: text;

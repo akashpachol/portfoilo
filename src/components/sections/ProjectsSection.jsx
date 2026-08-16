@@ -10,12 +10,15 @@ export default function ProjectsSection() {
     <section id="work" className="py-24 border-t border-[var(--border-color)]">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <TextReveal>
-          <div className="text-xs font-mono uppercase tracking-widest text-[var(--text-dim)] mb-4">
-            // SELECTED WORK
+          <div className="text-xs font-mono font-semibold uppercase tracking-widest text-[var(--accent)] mb-4">
+            03 — Selected Work
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[var(--text-main)] mb-16">
-            FEATURED PROJECTS
+          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[var(--text-main)] mb-2">
+            Production work, built to scale.
           </h2>
+          <p className="text-sm font-mono text-[var(--text-dim)] mb-16">
+            3 Case Studies
+          </p>
         </TextReveal>
 
         <div className="space-y-12">
@@ -48,7 +51,7 @@ export default function ProjectsSection() {
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-3 py-1 rounded-full text-xs font-medium border border-[var(--border-color)] text-[var(--text-muted)] bg-[var(--bg-primary)]/50"
+                          className="px-3 py-1 rounded-full text-xs font-mono border border-[var(--border-color)] text-[var(--text-muted)] bg-[var(--bg-primary)]/50"
                         >
                           {tag}
                         </span>
@@ -60,7 +63,7 @@ export default function ProjectsSection() {
                   <div className="shrink-0">
                     <Link
                       href={`/work/${project.slug}`}
-                      className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-[var(--border-color)] bg-[var(--bg-primary)] text-sm font-semibold text-[var(--text-main)] group-hover:border-[var(--accent)] group-hover:text-[var(--accent)] transition-all duration-200"
+                      className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-[var(--border-color)] bg-[var(--bg-primary)] text-xs font-mono font-semibold uppercase text-[var(--text-main)] group-hover:border-[var(--accent)] group-hover:text-[var(--accent)] transition-all duration-200"
                     >
                       <span>Case study</span>
                       <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

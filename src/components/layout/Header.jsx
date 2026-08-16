@@ -37,7 +37,7 @@ export default function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8 text-xs font-semibold tracking-wider text-[var(--text-muted)]">
+        <nav className="hidden md:flex items-center space-x-8 text-xs font-mono font-semibold tracking-widest text-[var(--text-muted)]">
           <Link
             href="/#work"
             className="hover:text-[var(--text-main)] transition-colors"
@@ -68,7 +68,7 @@ export default function Header() {
         <div className="hidden md:flex items-center space-x-4">
           <a
             href={`mailto:${siteConfig.email}`}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-full border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-main)] hover:border-[var(--border-hover)] transition-all duration-200"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-mono rounded-full border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-main)] hover:border-[var(--border-hover)] transition-all duration-200"
           >
             <span>{siteConfig.email}</span>
             <ArrowUpRight className="w-3.5 h-3.5 opacity-60" />
@@ -82,21 +82,9 @@ export default function Header() {
           <button
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open menu"
-            className="p-2 rounded-lg text-[var(--text-main)] border border-[var(--border-color)] bg-[var(--bg-card)]"
+            className="px-3.5 py-1.5 text-xs font-mono font-bold tracking-widest rounded-full border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-main)]"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
+            MENU
           </button>
         </div>
       </div>
