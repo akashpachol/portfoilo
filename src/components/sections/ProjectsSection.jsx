@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import TextReveal from "../ui/TextReveal";
+import Parallax from "../ui/Parallax";
 import { projectsData } from "@/config/projects";
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
@@ -66,53 +67,57 @@ export default function ProjectsSection() {
         <div className="space-y-12">
           {projectsData.map((project, idx) => (
             <TextReveal key={project.id} delay={idx * 0.15}>
-              <div className="project-card-box group relative p-8 sm:p-12 rounded-3xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)] transition-all duration-300">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                  {/* Left Column */}
-                  <div className="space-y-4 max-w-2xl">
-                    <div className="project-card-num flex items-center gap-3 font-mono text-xs text-[var(--accent)] tracking-widest">
-                      <span>{project.id}</span>
-                      {project.company && (
-                        <>
-                          <span>—</span>
-                          <span>{project.company}</span>
-                        </>
-                      )}
+              <Parallax speed={idx % 2 === 0 ? 0.08 : -0.08}>
+                <div className="project-card-box group relative p-8 sm:p-12 rounded-3xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-card-hover)] transition-all duration-300 shadow-xl shadow-black/5">
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                    {/* Left Column */}
+                    <div className="space-y-4 max-w-2xl">
+                      <div className="project-card-num flex items-center gap-3 font-mono text-xs text-[var(--accent)] tracking-widest">
+                        <Parallax speed={0.15} direction="horizontal" className="inline-block">
+                          <span>{project.id}</span>
+                        </Parallax>
+                        {project.company && (
+                          <>
+                            <span>—</span>
+                            <span>{project.company}</span>
+                          </>
+                        )}
+                      </div>
+
+                      <h3 className="text-2xl sm:text-4xl font-extrabold uppercase text-[var(--text-main)] group-hover:text-[var(--accent)] transition-colors">
+                        {project.title}
+                      </h3>
+
+                      <p className="text-base sm:text-lg text-[var(--text-muted)] leading-relaxed">
+                        {project.shortDescription}
+                      </p>
+
+                      {/* Stack tags */}
+                      <div className="flex flex-wrap gap-2 pt-2">
+                        {project.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-3 py-1 rounded-full text-xs font-mono border border-[var(--border-color)] text-[var(--text-muted)] bg-[var(--bg-primary)]/50"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     </div>
 
-                    <h3 className="text-2xl sm:text-4xl font-extrabold uppercase text-[var(--text-main)] group-hover:text-[var(--accent)] transition-colors">
-                      {project.title}
-                    </h3>
-
-                    <p className="text-base sm:text-lg text-[var(--text-muted)] leading-relaxed">
-                      {project.shortDescription}
-                    </p>
-
-                    {/* Stack tags */}
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-3 py-1 rounded-full text-xs font-mono border border-[var(--border-color)] text-[var(--text-muted)] bg-[var(--bg-primary)]/50"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                    {/* Right CTA */}
+                    <div className="shrink-0">
+                      <Link
+                        href={`/work/${project.slug}`}
+                        className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-[var(--border-color)] bg-[var(--bg-primary)] text-xs font-mono font-semibold uppercase text-[var(--text-main)] group-hover:border-[var(--accent)] group-hover:text-[var(--accent)] transition-all duration-200"
+                      >
+                        <span>Case study</span>
+                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      </Link>
                     </div>
-                  </div>
-
-                  {/* Right CTA */}
-                  <div className="shrink-0">
-                    <Link
-                      href={`/work/${project.slug}`}
-                      className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-[var(--border-color)] bg-[var(--bg-primary)] text-xs font-mono font-semibold uppercase text-[var(--text-main)] group-hover:border-[var(--accent)] group-hover:text-[var(--accent)] transition-all duration-200"
-                    >
-                      <span>Case study</span>
-                      <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </Link>
                   </div>
                 </div>
-              </div>
+              </Parallax>
             </TextReveal>
           ))}
         </div>

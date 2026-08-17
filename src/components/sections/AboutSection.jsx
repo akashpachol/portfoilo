@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import TextReveal from "../ui/TextReveal";
+import Parallax from "../ui/Parallax";
 import { siteConfig } from "@/config/site";
 import { CheckCircle2, MapPin, Building2 } from "lucide-react";
 import gsap from "gsap";
@@ -85,42 +86,44 @@ export default function AboutSection() {
           {/* Highlight Summary Card */}
           <div className="lg:col-span-5">
             <TextReveal delay={0.3}>
-              <div className="about-card p-8 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] backdrop-blur-sm space-y-6">
-                <div>
-                  <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-dim)] uppercase mb-1">
-                    <Building2 className="w-3.5 h-3.5" />
-                    <span>Currently</span>
+              <Parallax speed={-0.15}>
+                <div className="about-card p-8 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] backdrop-blur-sm space-y-6 shadow-xl shadow-black/5">
+                  <div>
+                    <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-dim)] uppercase mb-1">
+                      <Building2 className="w-3.5 h-3.5" />
+                      <span>Currently</span>
+                    </div>
+                    <div className="text-xl font-bold text-[var(--text-main)]">
+                      Next.js Developer
+                    </div>
+                    <div className="text-sm font-semibold text-[var(--accent)] mt-0.5">
+                      Nexteons
+                    </div>
                   </div>
-                  <div className="text-xl font-bold text-[var(--text-main)]">
-                    Next.js Developer
-                  </div>
-                  <div className="text-sm font-semibold text-[var(--accent)] mt-0.5">
-                    Nexteons
-                  </div>
-                </div>
 
-                <div>
-                  <div className="text-xs font-mono text-[var(--text-dim)] uppercase mb-3">
-                    Focus
+                  <div>
+                    <div className="text-xs font-mono text-[var(--text-dim)] uppercase mb-3">
+                      Focus
+                    </div>
+                    <ul className="space-y-3">
+                      {highlights.map((item, i) => (
+                        <li
+                          key={i}
+                          className="flex items-center gap-3 text-sm text-[var(--text-muted)]"
+                        >
+                          <CheckCircle2 className="w-4 h-4 text-[var(--accent)] shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="space-y-3">
-                    {highlights.map((item, i) => (
-                      <li
-                        key={i}
-                        className="flex items-center gap-3 text-sm text-[var(--text-muted)]"
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-[var(--accent)] shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
 
-                <div className="pt-4 border-t border-[var(--border-color)] flex items-center gap-2 text-xs font-mono text-[var(--text-dim)]">
-                  <MapPin className="w-3.5 h-3.5 text-[var(--accent)]" />
-                  <span>Based in {siteConfig.location}</span>
+                  <div className="pt-4 border-t border-[var(--border-color)] flex items-center gap-2 text-xs font-mono text-[var(--text-dim)]">
+                    <MapPin className="w-3.5 h-3.5 text-[var(--accent)]" />
+                    <span>Based in {siteConfig.location}</span>
+                  </div>
                 </div>
-              </div>
+              </Parallax>
             </TextReveal>
           </div>
         </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import TextReveal from "../ui/TextReveal";
+import Parallax from "../ui/Parallax";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -72,17 +73,19 @@ export default function MethodologySection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {steps.map((step, idx) => (
             <TextReveal key={step.num} delay={idx * 0.1}>
-              <div className="method-card p-8 sm:p-10 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--border-hover)] transition-all duration-300">
-                <div className="text-sm font-mono font-bold text-[var(--accent)] mb-4">
-                  {step.num}
+              <Parallax speed={idx % 2 === 0 ? 0.08 : -0.08}>
+                <div className="method-card p-8 sm:p-10 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--border-hover)] transition-all duration-300 shadow-lg shadow-black/5">
+                  <div className="text-sm font-mono font-bold text-[var(--accent)] mb-4">
+                    {step.num}
+                  </div>
+                  <h3 className="text-xl font-bold tracking-wider uppercase text-[var(--text-main)] mb-3">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
+                    {step.desc}
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold tracking-wider uppercase text-[var(--text-main)] mb-3">
-                  {step.title}
-                </h3>
-                <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-                  {step.desc}
-                </p>
-              </div>
+              </Parallax>
             </TextReveal>
           ))}
         </div>

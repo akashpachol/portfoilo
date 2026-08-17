@@ -12,26 +12,29 @@ import EducationSection from "@/components/sections/EducationSection";
 import ContactSection from "@/components/sections/ContactSection";
 import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/ui/CustomCursor";
+import SmoothScroll from "@/components/layout/SmoothScroll";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-[var(--bg-primary)] text-[var(--text-main)] overflow-x-hidden">
-      <CustomCursor />
-      <Header />
-      <main className="relative z-10">
-        <HeroSection />
-        <MarqueeBanner />
-        <AboutSection />
-        <ExperienceSection />
-        <ProjectsSection />
-        <SkillsSection />
-        <ArchitectureSection />
-        <MethodologySection />
-        <PerformanceSection />
-        <EducationSection />
-        <ContactSection />
-      </main>
-      <Footer />
-    </div>
+    <SmoothScroll>
+      <div className="relative min-h-screen bg-[var(--bg-primary)] text-[var(--text-main)] overflow-x-hidden">
+        <CustomCursor />
+        <Header />
+        <main className="relative z-10">
+          <HeroSection />
+          <MarqueeBanner />
+          <AboutSection />
+          <ExperienceSection />
+          <ProjectsSection />
+          <SkillsSection />
+          <ArchitectureSection />
+          <MethodologySection />
+          <PerformanceSection />
+          <EducationSection />
+          <ContactSection />
+        </main>
+        <Footer />
+      </div>
+    </SmoothScroll>
   );
 }

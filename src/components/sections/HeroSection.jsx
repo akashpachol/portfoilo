@@ -6,6 +6,7 @@ import { ArrowRight, ArrowDown } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { siteConfig } from "@/config/site";
+import Parallax from "@/components/ui/Parallax";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -117,6 +118,17 @@ export default function HeroSection() {
             "linear-gradient(to right, var(--border-color) 1px, transparent 1px)",
           backgroundSize: "20% 100%",
         }}
+      />
+
+      {/* Dynamic Parallax Ambient Glow Orbs */}
+      <Parallax
+        speed={-0.35}
+        className="pointer-events-none absolute -top-24 -right-24 w-96 h-96 rounded-full bg-sky-500/10 blur-[120px] z-0"
+      />
+      <Parallax
+        speed={0.4}
+        direction="horizontal"
+        className="pointer-events-none absolute bottom-10 -left-20 w-80 h-80 rounded-full bg-indigo-500/10 blur-[100px] z-0"
       />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 w-full z-10 my-auto flex flex-col justify-between h-full">

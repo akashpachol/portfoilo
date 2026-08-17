@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import TextReveal from "../ui/TextReveal";
+import Parallax from "../ui/Parallax";
 import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -66,20 +67,22 @@ export default function ArchitectureSection() {
 
         {/* Pipeline flow visual */}
         <TextReveal delay={0.1}>
-          <div className="p-8 sm:p-10 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)]">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              {pipeline.map((node, idx) => (
-                <div key={node} className="arch-node flex items-center gap-4">
-                  <div className="px-5 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-xs sm:text-sm font-mono font-bold tracking-widest text-[var(--text-main)]">
-                    {node}
+          <Parallax speed={-0.12}>
+            <div className="p-8 sm:p-10 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] shadow-xl shadow-black/5">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                {pipeline.map((node, idx) => (
+                  <div key={node} className="arch-node flex items-center gap-4">
+                    <div className="px-5 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-xs sm:text-sm font-mono font-bold tracking-widest text-[var(--text-main)]">
+                      {node}
+                    </div>
+                    {idx < pipeline.length - 1 && (
+                      <ArrowRight className="w-4 h-4 text-[var(--accent)] shrink-0 hidden sm:block" />
+                    )}
                   </div>
-                  {idx < pipeline.length - 1 && (
-                    <ArrowRight className="w-4 h-4 text-[var(--accent)] shrink-0 hidden sm:block" />
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          </Parallax>
         </TextReveal>
       </div>
     </section>
