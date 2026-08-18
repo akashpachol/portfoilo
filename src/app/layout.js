@@ -79,7 +79,7 @@ export default function RootLayout({ children }) {
   const websiteSchema = getWebSiteSchema();
 
   return (
-    <html lang="en" data-theme="dark" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable}`}>
+    <html lang="en" data-theme="dark" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable}`} style={{ backgroundColor: '#0a0b0e', colorScheme: 'dark' }}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -89,6 +89,8 @@ export default function RootLayout({ children }) {
                   var saved = localStorage.getItem('theme');
                   var theme = saved || 'dark';
                   document.documentElement.setAttribute('data-theme', theme);
+                  document.documentElement.style.backgroundColor = theme === 'light' ? '#f8fafc' : '#0a0b0e';
+                  document.documentElement.style.colorScheme = theme === 'light' ? 'light' : 'dark';
                 } catch (e) {}
               })();
             `,
