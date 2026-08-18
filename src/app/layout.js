@@ -18,7 +18,8 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
 });
-//seo
+//seo data
+
 export const metadata = {
   title: siteConfig.title,
   description: siteConfig.description,
