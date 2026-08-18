@@ -13,10 +13,22 @@ import ContactSection from "@/components/sections/ContactSection";
 import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/ui/CustomCursor";
 import SmoothScroll from "@/components/layout/SmoothScroll";
+import { getWebPageSchema } from "@/lib/seo";
+import { siteConfig } from "@/config/site";
 
 export default function Home() {
+  const webPageSchema = getWebPageSchema({
+    name: siteConfig.title,
+    description: siteConfig.description,
+    url: siteConfig.url,
+  });
+
   return (
     <SmoothScroll>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
       <div className="relative min-h-screen bg-[var(--bg-primary)] text-[var(--text-main)] overflow-x-hidden">
         <CustomCursor />
         <Header />

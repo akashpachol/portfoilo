@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
+import { getPersonSchema, getWebSiteSchema } from "@/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,7 +38,7 @@ export const metadata = {
   creator: "Akash P",
   metadataBase: new URL(siteConfig.url),
   alternates: {
-    canonical: "./",
+    canonical: siteConfig.url,
   },
   openGraph: {
     title: siteConfig.title,
@@ -52,13 +53,30 @@ export const metadata = {
     title: siteConfig.title,
     description: siteConfig.description,
   },
+  icons: {
+    icon: [
+      { url: "/akash.ico", type: "image/x-icon" },
+    ],
+    shortcut: "/akash.ico",
+    apple: "/akash.ico",
+  },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
 export default function RootLayout({ children }) {
+  const personSchema = getPersonSchema();
+  const websiteSchema = getWebSiteSchema();
+
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable}`}>
       <head>
@@ -74,6 +92,14 @@ export default function RootLayout({ children }) {
               })();
             `,
           }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
       <body className="antialiased min-h-screen bg-[var(--bg-primary)] text-[var(--text-main)] selection:bg-sky-500 selection:text-white">

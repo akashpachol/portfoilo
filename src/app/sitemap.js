@@ -2,15 +2,24 @@ import { siteConfig } from "@/config/site";
 import { projectsData } from "@/config/projects";
 
 export default function sitemap() {
-  const routes = [
-    "",
-    ...projectsData.map((project) => `/work/${project.slug}`),
-  ];
+  const baseUrl = siteConfig.url.endsWith("/")
+    ? siteConfig.url.slice(0, -1)
+    : siteConfig.url;
 
-  return routes.map((route) => ({
-    url: `${siteConfig.url}${route}`,
+  const projectRoutes = projectsData.map((project) => ({
+    url: `${baseUrl}/work/${project.slug}`,
     lastModified: new Date().toISOString(),
     changeFrequency: "monthly",
-    priority: route === "" ? 1.0 : 0.8,
+    priority: 0.8,
   }));
+
+  return [
+    {
+      url: `${baseUrl}/`,
+      lastModified: new Date().toISOString(),
+      changeFrequency: "weekly",
+      priority: 1.0,
+    },
+    ...projectRoutes,
+  ];
 }
