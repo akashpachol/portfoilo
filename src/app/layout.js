@@ -79,7 +79,7 @@ export default function RootLayout({ children }) {
   const websiteSchema = getWebSiteSchema();
 
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable}`}>
+    <html lang="en" data-theme="dark" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
