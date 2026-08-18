@@ -1,81 +1,140 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, X } from "lucide-react";
+
+const MENU_LINKS = [
+  { label: "HOME", href: "#home" },
+  { label: "WORK", href: "#work" },
+  { label: "ABOUT", href: "#about" },
+  { label: "EXPERIENCE", href: "#experience" },
+  { label: "CONTACT", href: "#contact" },
+];
 
 export default function MobileMenu({ isOpen, onClose }) {
-  const menuLinks = [
-    { label: "WORK", href: "/#work" },
-    { label: "ABOUT", href: "/#about" },
-    { label: "EXPERIENCE", href: "/#experience" },
-    { label: "CONTACT", href: "/#contact" },
-  ];
+  // Lock body scroll when drawer is open & add ESC key listener
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  const containerVariants = {
+    closed: {
+      opacity: 0,
+      clipPath: "circle(30px at calc(100% - 40px) 40px)",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+        staggerChildren: 0.05,
+        staggerDirection: -1,
+      },
+    },
+    open: {
+      opacity: 1,
+      clipPath: "circle(150% at calc(100% - 40px) 40px)",
+      transition: {
+        type: "spring",
+        stiffness: 120,
+        damping: 20,
+        delayChildren: 0.15,
+        staggerChildren: 0.08,
+      },
+    },
+  };
+
+  const itemVariants = {
+    closed: { opacity: 0, y: 30, rotateX: 45 },
+    open: {
+      opacity: 1,
+      y: 0,
+      rotateX: 0,
+      transition: { duration: 0.45, ease: [0.215, 0.61, 0.355, 1] },
+    },
+  };
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md"
-          />
+        <motion.div
+          id="mobile-drawer"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile Navigation Menu"
+          initial="closed"
+          animate="open"
+          exit="closed"
+          variants={containerVariants}
+          className="fixed inset-0 z-50 w-screen h-screen min-h-[100svh] bg-[#07080c]/98 dark:bg-[#07080c]/98 backdrop-blur-2xl text-[var(--text-main)] p-6 sm:p-10 flex flex-col justify-between overflow-hidden"
+        >
+          {/* Header inside overlay with explicit CLOSE button */}
+          <div className="flex items-center justify-between pb-6 border-b border-white/10">
+            <span className="text-xs font-mono font-bold tracking-widest text-white uppercase">
+              AKASH P
+            </span>
+            <button
+              onClick={onClose}
+              aria-label="Close Navigation Menu"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-white/20 bg-white/5 text-white text-xs font-mono font-bold tracking-widest uppercase hover:bg-white/15 hover:border-white/40 transition-all active:scale-95 cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5 text-sky-400" />
+              <span>CLOSE</span>
+            </button>
+          </div>
 
-          {/* Drawer Panel */}
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 bottom-0 z-50 w-full max-w-sm bg-[var(--bg-primary)] border-l border-[var(--border-color)] p-8 flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-center justify-between pb-8 border-b border-[var(--border-color)]">
-                <span className="text-sm font-bold tracking-widest text-[var(--text-main)]">
-                  AKASH P
-                </span>
-                <button
-                  onClick={onClose}
-                  aria-label="Close Menu"
-                  className="px-3.5 py-1.5 text-xs font-mono font-bold tracking-widest rounded-full border border-[var(--border-color)] text-[var(--text-main)] hover:border-[var(--border-hover)]"
-                >
-                  CLOSE
-                </button>
-              </div>
-
-              <nav className="mt-8 flex flex-col space-y-6">
-                {menuLinks.map((link) => (
+          {/* Staggered Navigation Items */}
+          <nav className="my-auto py-8">
+            <motion.ul className="flex flex-col space-y-4 sm:space-y-6">
+              {MENU_LINKS.map((link) => (
+                <motion.li key={link.label} variants={itemVariants}>
                   <Link
-                    key={link.label}
                     href={link.href}
                     onClick={onClose}
-                    className="text-2xl font-bold tracking-widest text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors"
+                    className="inline-block text-4xl sm:text-6xl font-normal tracking-tight uppercase text-white hover:text-[var(--accent)] transition-colors duration-200"
+                    style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
                   >
                     {link.label}
                   </Link>
-                ))}
-              </nav>
-            </div>
+                </motion.li>
+              ))}
+            </motion.ul>
+          </nav>
 
-            <div className="pt-8 border-t border-[var(--border-color)] space-y-4">
-              <a
-                href={`mailto:${siteConfig.email}`}
-                className="flex items-center justify-between px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] text-sm font-mono text-[var(--text-main)]"
-              >
-                <span>{siteConfig.email}</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </a>
-              <p className="text-xs font-mono text-[var(--text-dim)]">
-                © 2026 AKASH P. All rights reserved.
-              </p>
-            </div>
+          {/* Bottom Footer Info */}
+          <motion.div
+            variants={itemVariants}
+            className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+          >
+            <a
+              href={`mailto:${siteConfig.email}`}
+              className="inline-flex items-center gap-2 text-xs font-mono text-slate-300 hover:text-white transition-colors"
+            >
+              <span>{siteConfig.email}</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-sky-400" />
+            </a>
+            <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">
+              © 2026 AKASH P • KOZHIKODE, KERALA
+            </p>
           </motion.div>
-        </>
+        </motion.div>
       )}
     </AnimatePresence>
   );

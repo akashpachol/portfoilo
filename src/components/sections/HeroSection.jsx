@@ -146,6 +146,12 @@ export default function HeroSection() {
           { opacity: 0 },
           { opacity: 1, duration: 0.5 },
           "-=0.2"
+        )
+        .fromTo(
+          ".bottom-nav-dock",
+          { opacity: 0, y: 20, scale: 0.96 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power2.out" },
+          "-=0.3"
         );
 
       // 2. Parallax scroll scrub choreography
@@ -220,7 +226,8 @@ export default function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[92vh] pt-28 pb-12 flex flex-col justify-between overflow-hidden border-b border-[var(--border-color)]"
+      id="home"
+      className="relative min-h-[100svh] pt-20 sm:pt-20 md:pt-14 pb-16 flex flex-col justify-between overflow-hidden border-b border-[var(--border-color)]"
     >
       {/* Background GIF Overlay */}
       <div
@@ -292,7 +299,7 @@ export default function HeroSection() {
             {/* Stable Main Headline */}
             <div ref={headlineRef} className="hero-headline-container">
               <h1
-                className="text-[3.5rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6rem] xl:text-[6.8rem] font-normal leading-[1.03] tracking-tight uppercase text-[var(--text-main)] selection:bg-amber-300 selection:text-slate-950"
+                className="text-[2.6rem] xs:text-[3.2rem] sm:text-[4.2rem] md:text-[5.2rem] lg:text-[6rem] xl:text-[6.8rem] font-normal leading-[1.03] tracking-tight uppercase text-[var(--text-main)] selection:bg-amber-300 selection:text-slate-950"
                 style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
               >
                 <div className="overflow-hidden py-0.5">
