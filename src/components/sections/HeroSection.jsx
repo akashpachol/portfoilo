@@ -1,18 +1,61 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, ArrowDown } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, ArrowDown, Move } from "lucide-react";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { siteConfig } from "@/config/site";
-import Parallax from "@/components/ui/Parallax";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const GREETINGS = [
+  "Hello,",
+  "Hey,",
+  "Namaste,",
+  "Bonjour,",
+  "Konichiwa,",
+  "Salaam,",
+  "Hola,",
+];
+
 export default function HeroSection() {
   const containerRef = useRef(null);
+  const polaroidRef = useRef(null);
+  const secondaryBadgeRef = useRef(null);
+  const greetingRef = useRef(null);
+  const headlineRef = useRef(null);
+  const [greetingIdx, setGreetingIdx] = useState(0);
 
+  // Greeting cycling effect using GSAP
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const el = greetingRef.current;
+      if (!el) return;
+
+      // Animate out current greeting, then update state and animate in new greeting
+      gsap.to(el, {
+        y: -14,
+        opacity: 0,
+        duration: 0.35,
+        ease: "power2.in",
+        onComplete: () => {
+          setGreetingIdx((prev) => (prev + 1) % GREETINGS.length);
+          gsap.fromTo(
+            el,
+            { y: 14, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.45, ease: "power2.out" }
+          );
+        },
+      });
+    }, 2800);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Main GSAP entrance, scroll choreography & mouse parallax
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -36,28 +79,67 @@ export default function HeroSection() {
           "-=0.4"
         )
         .fromTo(
+          ".hero-greeting-box",
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.5 },
+          "-=0.3"
+        )
+        .fromTo(
           ".hero-headline-line",
-          { opacity: 0, y: 35 },
+          { opacity: 0, y: 40 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            stagger: 0.12,
+            duration: 0.9,
+            stagger: 0.14,
             clearProps: "all",
           },
           "-=0.3"
         )
         .fromTo(
+          polaroidRef.current,
+          {
+            opacity: 0,
+            y: 60,
+            x: 25,
+            rotate: -6,
+            scale: 0.93,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            x: 0,
+            rotate: -2.5,
+            scale: 1,
+            duration: 1.2,
+            ease: "power3.out",
+          },
+          "-=0.7"
+        )
+        .fromTo(
+          secondaryBadgeRef.current,
+          { opacity: 0, scale: 0.8, rotate: 8, y: 20 },
+          {
+            opacity: 1,
+            scale: 1,
+            rotate: 4,
+            y: 0,
+            duration: 0.7,
+            ease: "back.out(1.5)",
+          },
+          "-=0.6"
+        )
+        .fromTo(
           ".hero-description",
           { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: 0.6 },
-          "-=0.4"
+          "-=0.5"
         )
         .fromTo(
           ".hero-btn",
           { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 },
-          "-=0.3"
+          "-=0.4"
         )
         .fromTo(
           ".hero-scroll",
@@ -66,9 +148,9 @@ export default function HeroSection() {
           "-=0.2"
         );
 
-      // 2. Parallax scroll choreography
-      gsap.to(".hero-headline-container", {
-        yPercent: -15,
+      // 2. Parallax scroll scrub choreography
+      gsap.to(headlineRef.current, {
+        yPercent: -12,
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
@@ -78,8 +160,9 @@ export default function HeroSection() {
         },
       });
 
-      gsap.to(".hero-meta-row", {
-        yPercent: -10,
+      gsap.to(polaroidRef.current, {
+        yPercent: -18,
+        rotate: 1.5,
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
@@ -89,8 +172,9 @@ export default function HeroSection() {
         },
       });
 
-      gsap.to(".hero-footer-grid", {
-        yPercent: -6,
+      gsap.to(secondaryBadgeRef.current, {
+        yPercent: -28,
+        rotate: -2,
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
@@ -99,6 +183,35 @@ export default function HeroSection() {
           scrub: true,
         },
       });
+
+      // 3. Desktop mouse parallax (zero React re-renders)
+      const isDesktop = window.innerWidth >= 768;
+      if (isDesktop && containerRef.current) {
+        const handleMouseMove = (e) => {
+          const rect = containerRef.current.getBoundingClientRect();
+          const relX = (e.clientX - rect.left) / rect.width - 0.5;
+          const relY = (e.clientY - rect.top) / rect.height - 0.5;
+
+          gsap.to(secondaryBadgeRef.current, {
+            x: relX * -14,
+            y: relY * -14,
+            rotate: relX * -3 + 4,
+            duration: 0.9,
+            ease: "power2.out",
+          });
+
+          gsap.to(headlineRef.current, {
+            x: relX * 4,
+            y: relY * 4,
+            duration: 0.8,
+            ease: "power2.out",
+          });
+        };
+
+        const containerEl = containerRef.current;
+        containerEl.addEventListener("mousemove", handleMouseMove);
+        return () => containerEl.removeEventListener("mousemove", handleMouseMove);
+      }
     }, containerRef);
 
     return () => ctx.revert();
@@ -107,28 +220,44 @@ export default function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[90vh] pt-28 pb-10 flex flex-col justify-between overflow-hidden border-b border-[var(--border-color)]"
+      className="relative min-h-[92vh] pt-28 pb-12 flex flex-col justify-between overflow-hidden border-b border-[var(--border-color)]"
     >
-      {/* Editorial Hairline Grid Background overlay */}
+      {/* Background GIF Overlay */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.25]"
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+      >
+        <Image
+          src="/backgroundHero.gif"
+          alt=""
+          fill
+          unoptimized
+          priority
+          className="object-cover object-center opacity-[0.18] dark:opacity-[0.22] mix-blend-luminosity filter contrast-[1.1]"
+        />
+        {/* Soft Gradient Overlay for Optimal Text Contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)]/70 via-transparent to-[var(--bg-primary)]/80" />
+      </div>
+
+      {/* Hairline Grid Background overlay */}
+      <div
+        aria-hidden
+        className="hero-grid-bg pointer-events-none absolute inset-0 opacity-[0.25]"
         style={{
           backgroundImage:
-            "linear-gradient(to right, var(--border-color) 1px, transparent 1px)",
-          backgroundSize: "20% 100%",
+            "linear-gradient(to right, var(--border-color) 1px, transparent 1px), linear-gradient(to bottom, var(--border-color) 1px, transparent 1px)",
+          backgroundSize: "12.5% 80px",
         }}
       />
 
-      {/* Dynamic Parallax Ambient Glow Orbs */}
-      <Parallax
-        speed={-0.35}
-        className="pointer-events-none absolute -top-24 -right-24 w-96 h-96 rounded-full bg-sky-500/10 blur-[120px] z-0"
+      {/* Subtle Background Glow Orbs */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-32 -right-32 w-96 h-96 rounded-full bg-sky-500/10 blur-[130px] z-0"
       />
-      <Parallax
-        speed={0.4}
-        direction="horizontal"
-        className="pointer-events-none absolute bottom-10 -left-20 w-80 h-80 rounded-full bg-indigo-500/10 blur-[100px] z-0"
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-12 -left-24 w-80 h-80 rounded-full bg-indigo-500/10 blur-[110px] z-0"
       />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 w-full z-10 my-auto flex flex-col justify-between h-full">
@@ -143,22 +272,90 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Main Display Headline */}
-        <div className="hero-headline-container py-4">
-          <h1
-            className="text-[3.5rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[7.5rem] font-normal leading-[1.05] tracking-tight uppercase text-[var(--text-main)] selection:bg-amber-300 selection:text-slate-950"
-            style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-          >
-            <div className="py-1">
-              <div className="hero-headline-line block">AKASH P</div>
+        {/* Central Editorial Layout (Typography + Polaroid) */}
+        <div className="py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          {/* Left Column: Headlines & Greeting */}
+          <div className="lg:col-span-7 space-y-4">
+            {/* Dynamic Greeting */}
+            <div className="hero-greeting-box flex items-center gap-2 text-xs font-mono font-bold tracking-widest text-[var(--accent)] uppercase">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-pulse" />
+              <span className="overflow-hidden inline-block h-5">
+                <span ref={greetingRef} className="inline-block">
+                  {GREETINGS[greetingIdx]}
+                </span>
+              </span>
+              <span className="text-[var(--text-dim)] font-normal ml-1">
+                I&apos;M AKASH
+              </span>
             </div>
-            <div className="py-1">
-              <div className="hero-headline-line block">NEXT.JS</div>
+
+            {/* Stable Main Headline */}
+            <div ref={headlineRef} className="hero-headline-container">
+              <h1
+                className="text-[3.5rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6rem] xl:text-[6.8rem] font-normal leading-[1.03] tracking-tight uppercase text-[var(--text-main)] selection:bg-amber-300 selection:text-slate-950"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+              >
+                <div className="overflow-hidden py-0.5">
+                  <div className="hero-headline-line block">AKASH P</div>
+                </div>
+                <div className="overflow-hidden py-0.5">
+                  <div className="hero-headline-line block">NEXT.JS</div>
+                </div>
+                <div className="overflow-hidden py-0.5">
+                  <div className="hero-headline-line block">DEVELOPER</div>
+                </div>
+              </h1>
             </div>
-            <div className="py-1">
-              <div className="hero-headline-line block">DEVELOPER</div>
+          </div>
+
+          {/* Right Column: Physical Polaroid Card & Secondary Floating Badge */}
+          <div className="lg:col-span-5 relative flex justify-center lg:justify-end py-6 lg:py-0">
+            {/* Secondary Subordinate Floating Badge */}
+            <div
+              ref={secondaryBadgeRef}
+              className="absolute -top-4 left-6 sm:left-12 lg:-left-6 z-20 px-4 py-2 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-hover)] text-xs font-mono font-bold tracking-widest text-[var(--text-main)] shadow-xl shadow-black/40 flex items-center gap-2 backdrop-blur-md"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              <span>2.5+ YRS PROD</span>
             </div>
-          </h1>
+
+            {/* Physical Polaroid Photo Card (Draggable) */}
+            <motion.div
+              ref={polaroidRef}
+              drag
+              dragConstraints={containerRef}
+              dragElastic={0.15}
+              dragMomentum={true}
+              whileDrag={{ scale: 1.04, rotate: 0, cursor: "grabbing" }}
+              whileHover={{ scale: 1.02 }}
+              className="relative z-10 w-64 sm:w-72 md:w-80 bg-[#fbfcfd] dark:bg-[#161822] p-3.5 pt-3.5 pb-6 rounded-md border border-slate-200/80 dark:border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)] transform-gpu transition-shadow duration-300 hover:shadow-[0_30px_70px_-10px_rgba(0,0,0,0.65)] select-none cursor-grab active:cursor-grabbing group"
+            >
+              {/* Drag Indicator Badge */}
+              <div className="absolute -top-3 -right-3 z-30 opacity-80 group-hover:opacity-100 transition-opacity bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 text-[10px] font-mono font-bold px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1.5 pointer-events-none">
+                <Move className="w-2.5 h-2.5" />
+                <span>DRAG</span>
+              </div>
+
+              {/* Photo Frame Container */}
+              <div className="relative aspect-[6/6] w-full overflow-hidden rounded-sm bg-slate-900 border border-black/10 pointer-events-none">
+                <Image
+                  src="/me.jpg"
+                  alt="Akash P — Next.js Developer"
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 280px, 320px"
+                  className="object-cover object-center filter contrast-[1.05] saturate-[0.95] pointer-events-none"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+              </div>
+
+              {/* Polaroid Caption Label */}
+              <div className="pt-3 flex items-center justify-between font-mono text-[11px] tracking-wider text-slate-700 dark:text-slate-300 uppercase pointer-events-none">
+                <span className="font-semibold">Akash P • Kozhikode</span>
+                <span className="text-slate-400 dark:text-slate-500 font-normal">2026</span>
+              </div>
+            </motion.div>
+          </div>
         </div>
 
         {/* Lower Content Grid */}
