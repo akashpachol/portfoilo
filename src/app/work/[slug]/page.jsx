@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
   if (!project) return {};
 
   const projectUrl = `${siteConfig.url}/work/${project.slug}`;
-  const title = `${project.title} — Case Study | Akash P`;
+  const title = `${project.title} — Case Study |  AkashPachol`;
   const description = project.shortDescription;
 
   return {

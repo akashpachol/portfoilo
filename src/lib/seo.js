@@ -7,9 +7,9 @@ export function getPersonSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Akash P",
+    name: "AkashPachol",
     givenName: "Akash",
-    familyName: "P",
+    familyName: "Pachol",
     jobTitle: "Next.js Developer",
     worksFor: {
       "@type": "Organization",

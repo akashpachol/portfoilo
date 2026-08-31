@@ -24,7 +24,7 @@ export const metadata = {
   title: siteConfig.title,
   description: siteConfig.description,
   keywords: [
-    "Akash P",
+    "AkashPachol",
     "Next.js Developer",
     "React Developer",
     "Frontend Engineer",
@@ -35,8 +35,8 @@ export const metadata = {
     "Kozhikode",
     "Kerala",
   ],
-  authors: [{ name: "Akash P" }],
-  creator: "Akash P",
+  authors: [{ name: "AkashPachol" }],
+  creator: "AkashPachol",
   metadataBase: new URL(siteConfig.url),
   alternates: {
     canonical: siteConfig.url,

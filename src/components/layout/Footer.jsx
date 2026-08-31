@@ -37,7 +37,7 @@ export default function Footer() {
         </nav>
 
         <div className="text-[var(--text-dim)]">
-          © 2026 AKASH P
+          © 2026 AKASH PACHOL
         </div>
       </div>
     </footer>

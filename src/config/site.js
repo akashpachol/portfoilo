@@ -1,6 +1,6 @@
 export const siteConfig = {
-  name: "AKASH P",
-  title: "Akash P — Next.js Developer",
+  name: "AKASH PACHOL",
+  title: "Akash Pachol — Next.js Developer",
   role: "NEXT.JS DEVELOPER",
   experience: "2.5+ years experience",
   location: "Kozhikode, Kerala, India",
@@ -11,5 +11,5 @@ export const siteConfig = {
   url: "https://akashpachol.in",
   ogImage: "https://akash-p-cinematic-canvas.lovable.app/og-image.jpg",
   description:
-    "Akash P is a Next.js Developer with 2.5+ years of experience building scalable, performant web applications using Next.js, React, TypeScript, Node.js, GraphQL and modern frontend architecture",
+    "Akash Pachol is a Next.js Developer with 2.5+ years of experience building scalable, performant web applications using Next.js, React, TypeScript, Node.js, GraphQL and modern frontend architecture",
 };
