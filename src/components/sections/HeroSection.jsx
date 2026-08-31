@@ -113,6 +113,7 @@ export default function HeroSection() {
             scale: 1,
             duration: 1.2,
             ease: "power3.out",
+            clearProps: "transform",
           },
           "-=0.7"
         )
@@ -166,17 +167,8 @@ export default function HeroSection() {
         },
       });
 
-      gsap.to(polaroidRef.current, {
-        yPercent: -18,
-        rotate: 1.5,
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
+      // NOTE: No scroll parallax on polaroid — it's drag-managed by Framer Motion.
+      // Mixing GSAP scroll transforms + Framer drag causes misalignment.
 
       gsap.to(secondaryBadgeRef.current, {
         yPercent: -28,
@@ -330,12 +322,12 @@ export default function HeroSection() {
             <motion.div
               ref={polaroidRef}
               drag
-              dragConstraints={containerRef}
-              dragElastic={0.15}
               dragMomentum={true}
-              whileDrag={{ scale: 1.04, rotate: 0, cursor: "grabbing" }}
+              dragTransition={{ bounceStiffness: 300, bounceDamping: 20 }}
+              whileDrag={{ scale: 1.04, rotate: 0, cursor: "grabbing", boxShadow: "0 35px 80px -10px rgba(0,0,0,0.6)" }}
               whileHover={{ scale: 1.02 }}
-              className="relative z-10 w-64 sm:w-72 md:w-80 bg-[#fbfcfd] dark:bg-[#161822] p-3.5 pt-3.5 pb-6 rounded-md border border-slate-200/80 dark:border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)] transform-gpu transition-shadow duration-300 hover:shadow-[0_30px_70px_-10px_rgba(0,0,0,0.65)] select-none cursor-grab active:cursor-grabbing group"
+              style={{ zIndex: 10 }}
+              className="relative w-64 sm:w-72 md:w-80 bg-[#fbfcfd] dark:bg-[#161822] p-3.5 pt-3.5 pb-6 rounded-md border border-slate-200/80 dark:border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)] transform-gpu transition-shadow duration-300 hover:shadow-[0_30px_70px_-10px_rgba(0,0,0,0.65)] select-none cursor-grab active:cursor-grabbing group"
             >
               {/* Drag Indicator Badge */}
               <div className="absolute -top-3 -right-3 z-30 opacity-80 group-hover:opacity-100 transition-opacity bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 text-[10px] font-mono font-bold px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1.5 pointer-events-none">
