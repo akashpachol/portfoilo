@@ -1,130 +1,207 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import TextReveal from "../ui/TextReveal";
-import Parallax from "../ui/Parallax";
-import { siteConfig } from "@/config/site";
-import { CheckCircle2, MapPin, Building2 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+import AboutDecorativePath from "../About/AboutDecorativePath";
+import AboutIntro from "../About/AboutIntro";
+import AboutDescription from "../About/AboutDescription";
+import AboutExperience from "../About/AboutExperience";
+import AboutFocus from "../About/AboutFocus";
+import AboutLocation from "../About/AboutLocation";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutSection() {
-  const containerRef = useRef(null);
+  const sectionRef = useRef(null);
+  const pathRef = useRef(null);
+  const dotRef = useRef(null);
 
   useEffect(() => {
+    // 1. Reduced motion check
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion) {
+      gsap.set(
+        ".about-line-inner, .about-desc-inner, .about-exp-block, .about-focus-item, .about-location-badge",
+        { opacity: 1, y: 0, transform: "none" }
+      );
+      gsap.set(".about-divider-line", { scaleX: 1 });
+      return;
+    }
 
     const ctx = gsap.context(() => {
-      gsap.to(".about-card", {
-        yPercent: -10,
-        ease: "none",
+      const pathEl = pathRef.current;
+      const dotEl = dotRef.current;
+
+      // 2. SVG path stroke drawing & synchronized endpoint marker (NO PINNING)
+      if (pathEl) {
+        const pathLength = pathEl.getTotalLength();
+        gsap.set(pathEl, {
+          strokeDasharray: pathLength,
+          strokeDashoffset: pathLength,
+        });
+
+        if (dotEl) {
+          const initialPoint = pathEl.getPointAtLength(0);
+          gsap.set(dotEl, {
+            cx: initialPoint.x,
+            cy: initialPoint.y,
+            opacity: 0,
+          });
+        }
+
+        gsap.to(pathEl, {
+          strokeDashoffset: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+            end: "bottom 25%",
+            scrub: 0.5,
+            onUpdate: (self) => {
+              if (dotEl && pathEl) {
+                const currentProgress = self.progress;
+                const activePoint = pathEl.getPointAtLength(
+                  currentProgress * pathLength
+                );
+                gsap.set(dotEl, {
+                  cx: activePoint.x,
+                  cy: activePoint.y,
+                  opacity: currentProgress > 0.01 ? 1 : 0,
+                });
+              }
+            },
+          },
+        });
+      }
+
+      // 3. Natural viewport entry reveals for text content blocks
+      gsap.to(".about-eyebrow", {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power3.out",
         scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
+          trigger: sectionRef.current,
+          start: "top 80%",
         },
       });
 
-      gsap.to(".about-title", {
-        yPercent: -5,
-        ease: "none",
+      gsap.to(".about-line-inner", {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power4.out",
+        stagger: 0.12,
         scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
+          trigger: sectionRef.current,
+          start: "top 75%",
         },
       });
-    }, containerRef);
+
+      gsap.to(".about-desc-inner", {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power3.out",
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: ".about-desc-inner",
+          start: "top 85%",
+        },
+      });
+
+      gsap.fromTo(
+        ".about-exp-block",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".about-exp-block",
+            start: "top 85%",
+          },
+        }
+      );
+
+      gsap.to(".about-divider-line", {
+        scaleX: 1,
+        duration: 0.7,
+        ease: "power3.inOut",
+        scrollTrigger: {
+          trigger: ".about-exp-block",
+          start: "top 80%",
+        },
+      });
+
+      gsap.fromTo(
+        ".about-focus-item",
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          stagger: 0.08,
+          scrollTrigger: {
+            trigger: ".about-focus-item",
+            start: "top 88%",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        ".about-location-badge",
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".about-location-badge",
+            start: "top 90%",
+          },
+        }
+      );
+
+      ScrollTrigger.refresh();
+    }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  const highlights = [
-    "Scalable frontend architecture",
-    "Performance optimization",
-    "SEO & rendering strategy",
-    "Reusable component systems",
-    "API integration",
-  ];
-
   return (
-    <section ref={containerRef} id="about" className="py-24 border-t border-[var(--border-color)]">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <TextReveal>
-          <div className="text-xs font-mono font-semibold uppercase tracking-widest text-[var(--accent)] mb-4">
-            01 — About
-          </div>
-          <h2 className="about-title text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[var(--text-main)] mb-12 max-w-4xl">
-            Frontend engineer building scalable, performant, refined digital experiences.
-          </h2>
-        </TextReveal>
+    <section
+      ref={sectionRef}
+      id="about"
+      className="relative py-24 sm:py-32 border-t border-[var(--border-color)] overflow-hidden bg-[var(--bg-primary)]"
+    >
+      {/* Decorative Organic Center-Origin SVG Path */}
+      <AboutDecorativePath ref={pathRef} dotRef={dotRef} />
 
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full">
+        {/* Intro Section (Eyebrow + Masked Headline) */}
+        <AboutIntro />
+
+        {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Main Bio Text */}
-          <div className="lg:col-span-7 space-y-6 text-lg sm:text-xl text-[var(--text-muted)] leading-relaxed">
-            <TextReveal delay={0.1}>
-              <p>
-                I&apos;m a Next.js developer with 2.5+ years of experience shipping production-grade web applications. My work sits where interface craft meets architecture — component systems, rendering strategy and the data layer that holds it all together.
-              </p>
-            </TextReveal>
-
-            <TextReveal delay={0.2}>
-              <p>
-                Day to day that means Next.js and React with TypeScript, Node.js and Express on the server, GraphQL through Apollo Client alongside REST APIs, and TurboRepo monorepos that keep multiple applications sharing one coherent component layer — tuned for performance and SEO.
-              </p>
-            </TextReveal>
+          {/* Main Bio Paragraphs */}
+          <div className="lg:col-span-7">
+            <AboutDescription />
           </div>
 
-          {/* Highlight Summary Card */}
-          <div className="lg:col-span-5">
-            <TextReveal delay={0.3}>
-              <Parallax speed={-0.15}>
-                <div className="about-card p-8 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] backdrop-blur-sm space-y-6 shadow-xl shadow-black/5">
-                  <div>
-                    <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-dim)] uppercase mb-1">
-                      <Building2 className="w-3.5 h-3.5" />
-                      <span>Currently</span>
-                    </div>
-                    <div className="text-xl font-bold text-[var(--text-main)]">
-                      Next.js Developer
-                    </div>
-                    <div className="text-sm font-semibold text-[var(--accent)] mt-0.5">
-                      Nexteons
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs font-mono text-[var(--text-dim)] uppercase mb-3">
-                      Focus
-                    </div>
-                    <ul className="space-y-3">
-                      {highlights.map((item, i) => (
-                        <li
-                          key={i}
-                          className="flex items-center gap-3 text-sm text-[var(--text-muted)]"
-                        >
-                          <CheckCircle2 className="w-4 h-4 text-[var(--accent)] shrink-0" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="pt-4 border-t border-[var(--border-color)] flex items-center gap-2 text-xs font-mono text-[var(--text-dim)]">
-                    <MapPin className="w-3.5 h-3.5 text-[var(--accent)]" />
-                    <span>Based in {siteConfig.location}</span>
-                  </div>
-                </div>
-              </Parallax>
-            </TextReveal>
+          {/* Role, Company, Focus List & Location */}
+          <div className="lg:col-span-5 space-y-8">
+            <AboutExperience />
+            <AboutFocus />
+            <AboutLocation />
           </div>
         </div>
       </div>

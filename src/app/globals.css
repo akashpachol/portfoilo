@@ -13,6 +13,8 @@
     --text-dim: #64748b;
     --accent: #38bdf8;
     --accent-glow: rgba(56, 189, 248, 0.12);
+    --about-accent: #38bdf8;
+    --about-accent-glow: rgba(56, 189, 248, 0.2);
   }
 
   [data-theme="light"] {
@@ -27,8 +29,48 @@
     --text-dim: #94a3b8;
     --accent: #0284c7;
     --accent-glow: rgba(2, 132, 199, 0.1);
+    --about-accent: #0284c7;
+    --about-accent-glow: rgba(2, 132, 199, 0.2);
   }
 }
+
+/* About section animation utilities */
+.about-line-mask {
+  overflow: hidden;
+  display: block;
+}
+
+.about-line-inner {
+  display: block;
+  transform: translateY(105%) translateZ(0);
+  opacity: 0;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.about-divider-line {
+  transform: scaleX(0) translateZ(0);
+  transform-origin: left center;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.about-path-element {
+  will-change: stroke-dashoffset;
+  transform: translateZ(0);
+}
+
+@media (max-width: 768px) {
+  .about-path-element {
+    stroke-width: 8px !important;
+  }
+  .about-dot-element {
+    r: 5.5px !important;
+  }
+}
+
+
+
 
 html {
   color-scheme: dark;
